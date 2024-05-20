@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import ModelDef from "../ModelDef.mjs";
+import { Model } from "../Model.mjs";
 
-const UserModel = new ModelDef(
+const UserModel = new Model(
     'User',
     {
         ID: {
@@ -18,6 +18,9 @@ const UserModel = new ModelDef(
         Login: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                is: /[0-9a-zA-Z_]{6,64}/
+            },
         },
         Password: {
             type: DataTypes.STRING,
@@ -26,11 +29,14 @@ const UserModel = new ModelDef(
         Email: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                is: /[0-9a-zA-Z_]+@[0-9a-zA-Z_.]+/
+            },
         },
         CurrentSessionUUID: {
             type: DataTypes.UUID,
-        }
-    }
+        },
+    },
 );
 
 export default UserModel;
