@@ -12,21 +12,8 @@ import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
 import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 import Fastify from 'fastify';
 
-
-// HTTP
-const fastify = Fastify({});
-
-fastify.get('/', {}, async (req, res) => {
-    // return { hello: '56' };
-    res.type('text/html');
-    return '<h1>hello</h1>';
-});
-
-await fastify.listen({ port: 3000 });
-
-
 // DB
-const db = new Sequelize('cinema', 'postgres', 'zaq1@WSX', {
+const db = new Sequelize('', 'postgres', 'M!neCr@ft1', {
     host: 'localhost',
     dialect: 'postgres'
 });
@@ -60,3 +47,19 @@ const Ticket = TicketModel.use();
 const User = UserModel.use();
 
 db.close();
+
+// HTTP
+const fastify = Fastify({});
+
+fastify.get('/', {}, async (req, res) => {
+    // return { hello: '56' };
+    res.type('text/html');
+    return '<h1>hello</h1><p>Kfdghdfbj fnjkfdb asds </p>';
+});
+
+fastify.get('/schedule', {}, async (req, res) => {
+    return 
+});
+
+await fastify.listen({ port: 3000 });
+

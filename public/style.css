@@ -1,0 +1,88 @@
+body {
+    background-color: #2B2A2D;
+    margin: 0;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: 20% 65% 15%;
+    position: sticky;
+    top: 0;
+    height: 70px;
+    margin: 0;
+    border-bottom: ;
+    background-color: #161517;
+    box-shadow: 0px 2px 2px #454347;
+}
+
+.nav-title {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    color: #D9C219;
+    text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+    display: flex;
+    padding-left: 10%;
+    align-items: center;
+}
+
+.nav-title, .block, .logging {
+    transition: transform 0.3s ease, background-color 1s ease;
+}
+
+.nav-title:hover, .block:hover, .logging:hover {
+    transform: scale(1.05);
+}
+
+.block:hover {
+    background-color: #323034;
+}
+
+.nav-blocks {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    padding: 7px;
+}
+
+.block {
+    display: flex;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    font-size: 21px;
+    width: 90%;
+    font-weight: 600;
+    color: white;
+    box-shadow: 1px 1px 2px #5c595f;
+    border-radius: 3px;
+}
+
+.logging {
+    display: flex;
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    border-radius: 8px;
+    background-color: aliceblue;
+    height: 35px;
+    width: 60%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    height: 10000px;
+}
+
+footer {
+    height: 80px;
+    display: flex;
+    font-weight: 500;
+    justify-content: center;
+    align-items: center;
+    background-color: #161517;
+    color: white;
+    text-align: center;
+}
