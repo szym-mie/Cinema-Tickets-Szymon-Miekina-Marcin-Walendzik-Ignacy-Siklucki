@@ -15,7 +15,7 @@ import { RouteManager } from './src/RouteManager.mjs';
 
 import mustache from 'mustache';
 
-import MainRoute from './src/route/MainRoute.mjs';
+import IndexRoute from './src/route/IndexRoute.mjs';
 
 
 // Database
@@ -63,6 +63,6 @@ routeManager.withView({
     plugin: mustache
 })
 
-routeManager.addRoute(MainRoute);
+routeManager.addRoute(IndexRoute);
 
 await routeManager.startServer();
