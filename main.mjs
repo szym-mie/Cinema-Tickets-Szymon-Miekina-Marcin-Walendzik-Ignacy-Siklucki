@@ -6,7 +6,10 @@ import RoomModel from './src/model/RoomModel.mjs';
 import ShowModel from './src/model/ShowModel.mjs';
 import TicketModel from './src/model/TicketModel.mjs';
 import UserModel from './src/model/UserModel.mjs';
-
+import TicketUserAssoc from './src/assoc/TicketUserAssoc.mjs';
+import TicketShowAssoc from './src/assoc/TicketShowAssoc.mjs';
+import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
+import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 
 const db = new Sequelize('cinema', 'postgres', 'zaq1@WSX', {
     host: 'localhost',
@@ -28,11 +31,10 @@ modelManager.addModel(ShowModel);
 modelManager.addModel(TicketModel);
 modelManager.addModel(UserModel);
 
-// TODO: Add associations for ticket and show tables.
-// modelManager.addAssociation();
-// modelManager.addAssociation();
-// modelManager.addAssociation();
-// modelManager.addAssociation();
+modelManager.addAssoc(TicketShowAssoc);
+modelManager.addAssoc(TicketUserAssoc);
+modelManager.addAssoc(ShowMovieAssoc);
+modelManager.addAssoc(ShowRoomAssoc);
 
 await modelManager.init(db, false);
 
@@ -42,13 +44,6 @@ const Show = ShowModel.use();
 const Ticket = TicketModel.use();
 const User = UserModel.use();
 
-await User.create({
-    Login: 'jp2137',
-    Password: 'zaq1@WSX',
-    Email: 'jp2@wadowice.pl'
-});
 
-const users = await User.findAll();
-console.log(users.map(v => v.dataValues));
 
 db.close();

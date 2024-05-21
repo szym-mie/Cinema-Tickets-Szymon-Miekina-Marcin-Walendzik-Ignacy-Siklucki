@@ -31,7 +31,7 @@ class ModelManager {
      * Add an association to association collection.
      * @param {Association} association Association to be added.
      */
-    addAssociation(association) {
+    addAssoc(association) {
         const key = association.associationName;
         if (!this.modelMap.has(key))
             this.associationMap.set(association.associationName, association);

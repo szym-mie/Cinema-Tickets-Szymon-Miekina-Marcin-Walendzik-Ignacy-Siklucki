@@ -2,13 +2,21 @@ import { Model } from "./Model.mjs";
 
 class Association {
     /**
-     * 
-     * @param {string} associationName 
-     * @param {object} associationDefinition 
+     * @constructor
+     * @param {string} associationName Association name.
+     * @param {object} associationDefinition Association defintion object.
+     * @param {typeof AssociationType} associationDefinition.type Type of association.
+     * @param {Model} associationDefinition.from Source model. 
+     * @param {Model} associationDefinition.to Target model.
+     * @param {string?} associationDefinition.fromName Source model name.
+     * @param {string?} associationDefinition.toName Target model name.
+     * @param {string} associationDefinition.field Field name for foreign key.
+     * @param {string} associationDefinition.juntion Table name for junction.
      */
     constructor(associationName, associationDefinition) {
         this.associationName = associationName;
         this.associationDefinition = associationDefinition;
+        this.associationInstance = null;
     }
 
     /**
@@ -24,7 +32,7 @@ class Association {
 
     /**
      * Get source model reference.
-     * @returns {Model|string} Model or model name.
+     * @returns {Model} Model or model name.
      */
     getSource() {
         return this.associationDefinition.from;        
@@ -32,7 +40,7 @@ class Association {
 
     /**
      * Get target model reference.
-     * @returns {Model|string} Model or model name.
+     * @returns {Model} Model or model name.
      */
     getTarget() {
         return this.associationDefinition.to;
@@ -52,67 +60,90 @@ class Association {
      */
     initWithExternal(source, target) {
         if (source !== undefined && target !== undefined) {
-            const type = this.associationDefinition.type;
-            type(source, target, this.getOptions());
+            const typeConstructor = this.associationDefinition.type;
+            const type = new typeConstructor(this.getOptions());
+            type.apply(source, target);
         } else {
             throw new Error('Source or target in association ' + this.associationName + 'is undefined');
         }
     }
+}
 
+/**
+ * @abstract
+ */
+class AssociationType {
     /**
-     * Setup one to many relation from source model to target model.
-     * @static
-     * @param {Model} source Source model.
-     * @param {Model} target Target model.
-     * @param {object} options Additional options.
+     * @constructor
+     * @param {object} options Type options.
      * @param {string} options.field Field in target model to use.
-     */
-    static setOneToOne(source, target, options) {
-        source.modelConstructor.hasOne(
-            target.modelConstructor,
-            { foreignKey: options.field }
-        );
-        target.modelConstructor.belongsTo(source.modelConstructor);
-    }
-
-    /**
-     * Setup one to many relation from source model to target model.
-     * @static
-     * @param {Model} source Source model.
-     * @param {Model} target Target model.
-     * @param {object} options Additional options.
-     * @param {string} options.field Field in target model to use.
-     */
-    static setOneToMany(source, target, options) {
-        source.modelConstructor.hasMany(
-            target.modelConstructor,
-            { foreignKey: options.field }
-        );
-        target.modelConstructor.belongsTo(source.modelConstructor);
-    }
-
-    /**
-     * Setup many to many relation from source model to target model.
-     * @static
-     * @param {Model} source Source model.
-     * @param {Model} target Target model.
-     * @param {object} options Additional options.
      * @param {string} options.junction Junction model name.
      */
-    static setManyToMany(source, target, options) {
+    constructor(options) {
+        this.options = options;
+    }
+
+    /**
+     * Create association between two models.
+     * @abstract
+     * @param {Model} _source Source model.
+     * @param {Model} _target Target model.
+     */
+    apply(_source, _target) {}
+}
+
+class OneToOne extends AssociationType {
+    /**
+     * Create one-to-one association between two models.
+     * @param {Model} source Source model.
+     * @param {Model} target Target model.
+     */
+    apply(source, target) {
+        source.modelConstructor.hasOne(
+            target.modelConstructor,
+            { foreignKey: this.options.field }
+        );
+        target.modelConstructor.belongsTo(source.modelConstructor);
+    }
+}
+
+class OneToMany extends AssociationType {
+    /**
+     * Create one-to-many association between two models.
+     * @param {Model} source Source model.
+     * @param {Model} target Target model.
+     */
+    apply(source, target) {
+        source.modelConstructor.hasMany(
+            target.modelConstructor,
+            { foreignKey: this.options.field }
+        );
+        target.modelConstructor.belongsTo(source.modelConstructor);
+    }
+}
+
+class ManyToMany extends AssociationType {
+    /**
+     * Create many-to-many association between two models.
+     * @param {Model} source Source model.
+     * @param {Model} target Target model.
+     */
+    apply(source, target) {
         source.modelConstructor.belongsToMany(
             target.modelConstructor,
-            { through: options.junction }
+            { through: this.options.junction }
         );
         target.modelConstructor.belongsToMany(
             source.modelConstructor,
-            { through: options.junction }
+            { through: this.options.junction }
         );
     }
-
-    static OneToOne = Association.setOneToOne;
-    static OneToMany = Association.setOneToMany;
-    static ManyToMany = Association.setManyToMany;
 }
 
-export { Association };
+const AssociationTypes =  {
+    OneToOne: OneToOne,
+    OneToMany: OneToMany,
+    ManyToMany: ManyToMany,
+}
+
+export { Association, AssociationTypes };

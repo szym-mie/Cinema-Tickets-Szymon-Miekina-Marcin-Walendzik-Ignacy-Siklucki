@@ -19,7 +19,7 @@ const UserModel = new Model(
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                is: /[0-9a-zA-Z_]{6,64}/
+                is: /[0-9a-zA-Z_]{4,64}/
             },
         },
         Password: {
