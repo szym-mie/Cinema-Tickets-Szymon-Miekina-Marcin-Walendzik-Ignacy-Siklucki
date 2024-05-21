@@ -10,7 +10,22 @@ import TicketUserAssoc from './src/assoc/TicketUserAssoc.mjs';
 import TicketShowAssoc from './src/assoc/TicketShowAssoc.mjs';
 import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
 import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
+import Fastify from 'fastify';
 
+
+// HTTP
+const fastify = Fastify({});
+
+fastify.get('/', {}, async (req, res) => {
+    // return { hello: '56' };
+    res.type('text/html');
+    return '<h1>hello</h1>';
+});
+
+await fastify.listen({ port: 3000 });
+
+
+// DB
 const db = new Sequelize('cinema', 'postgres', 'zaq1@WSX', {
     host: 'localhost',
     dialect: 'postgres'
@@ -43,7 +58,5 @@ const Room = RoomModel.use();
 const Show = ShowModel.use();
 const Ticket = TicketModel.use();
 const User = UserModel.use();
-
-
 
 db.close();
