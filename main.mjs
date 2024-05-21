@@ -13,7 +13,7 @@ import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 import Fastify from 'fastify';
 
 // DB
-const db = new Sequelize('', 'postgres', 'M!neCr@ft1', {
+const db = new Sequelize('', 'postgres', 'Lol', {
     host: 'localhost',
     dialect: 'postgres'
 });
