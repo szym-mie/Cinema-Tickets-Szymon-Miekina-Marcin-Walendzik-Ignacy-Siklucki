@@ -21,7 +21,7 @@ class Association {
 
     /**
      * @private
-     * @returns {object} Options.
+     * @returns Options.
      */
     getOptions() {
         const field = this.associationDefinition.field;
@@ -31,16 +31,16 @@ class Association {
     }
 
     /**
-     * Get source model reference.
-     * @returns {Model} Model or model name.
+     * Get default source model reference.
+     * @returns Model or model name.
      */
     getSource() {
         return this.associationDefinition.from;        
     }
 
     /**
-     * Get target model reference.
-     * @returns {Model} Model or model name.
+     * Get default target model reference.
+     * @returns Model or model name.
      */
     getTarget() {
         return this.associationDefinition.to;

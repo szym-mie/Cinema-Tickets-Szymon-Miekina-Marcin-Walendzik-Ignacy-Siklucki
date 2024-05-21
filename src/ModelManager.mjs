@@ -12,6 +12,10 @@ class ModelManager {
          * @type {Map<string, Model>}
          */
         this.modelMap = new Map();
+        /**
+         * @public
+         * @type {Map<string, Association>}
+         */
         this.associationMap = new Map();
     }
 
@@ -41,7 +45,7 @@ class ModelManager {
 
     /**
      * Return all associations.
-     * @returns {Association[]} Array of all associations.
+     * @returns Array of all associations.
      */
     getAllAssociations() {
         return [...this.associationMap.values()];
@@ -49,7 +53,7 @@ class ModelManager {
 
     /**
      * Return all uninitialized models.
-     * @returns {Model[]} Array of uninitialized models.
+     * @returns Array of uninitialized models.
      */
     getUninitializedModels() {
         return [...this.modelMap.values()].filter(def => !def.isInit());
@@ -58,7 +62,7 @@ class ModelManager {
     /**
      * Find a model by model name.
      * @param {string} modelName Model name.
-     * @returns {Model?} Maybe found model or undefined if non-existant.
+     * @returns Maybe found model or undefined if non-existant.
      */
     getModelByName(modelName) {
         return this.modelMap.get(modelName);
@@ -68,7 +72,7 @@ class ModelManager {
      * Initialize all uninitialized models.
      * @param {Sequelize} sequelize Sequlize instance.
      * @param {boolean} shouldSync Should recreate table in database.
-     * @returns {Promise<Model[]>} Array on newly initialized models.
+     * @returns Array on newly initialized models.
      */
     async init(sequelize, shouldSync = false) {
         // Wait for all models w/ instance to initialize.

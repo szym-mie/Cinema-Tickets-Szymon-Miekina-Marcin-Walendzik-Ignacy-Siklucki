@@ -13,18 +13,6 @@ import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 import Fastify from 'fastify';
 
 
-// HTTP
-const fastify = Fastify({});
-
-fastify.get('/', {}, async (req, res) => {
-    // return { hello: '56' };
-    res.type('text/html');
-    return '<h1>hello</h1>';
-});
-
-await fastify.listen({ port: 3000 });
-
-
 // DB
 const db = new Sequelize('cinema', 'postgres', 'zaq1@WSX', {
     host: 'localhost',
@@ -59,4 +47,14 @@ const Show = ShowModel.use();
 const Ticket = TicketModel.use();
 const User = UserModel.use();
 
-db.close();
+// HTTP
+const fastify = Fastify({});
+
+fastify.get('/', {}, async (req, res) => {
+    // return { hello: '56' };
+    res.type('text/html');
+    const users = await User.findAll();
+    return '<h1>hello</h1>'+ JSON.stringify(users);
+});
+
+await fastify.listen({ port: 3000 });

@@ -14,7 +14,7 @@ class Model {
 
     /**
      * Check if the model has been initialized.
-     * @returns {boolean} True if static ready.
+     * @returns True if static ready.
      */
     isInit() {
         return this.modelConstructor !== null;
@@ -23,10 +23,10 @@ class Model {
     /**
      * Retrieve model static for data access/modification.
      * @throws {Error} When model is not initialized.
-     * @returns {ModelStatic} Model static.
+     * @returns Model static.
      */
     use() {
-        if (this.isInit())
+        if (this.modelConstructor !== null)
             return this.modelConstructor;
         else
             throw new Error('Model ' + this.modelName + ' not initialized yet');
@@ -36,7 +36,7 @@ class Model {
      * Intialize, by creating and returning model constructor.
      * @param {Sequelize} sequelize Sequalize instance.
      * @param {boolean} shouldSync Should recreate table in database.
-     * @returns {ModelStatic} Newly created model constructor.
+     * @returns Newly created model constructor.
      */
     async init(sequelize, shouldSync = false) {
         const model = sequelize.define(
