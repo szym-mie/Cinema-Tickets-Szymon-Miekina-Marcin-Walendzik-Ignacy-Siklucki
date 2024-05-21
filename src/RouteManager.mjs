@@ -1,4 +1,10 @@
 import Fastify from 'fastify';
+import path from 'node:path';
+
+import fastifyStatic from '@fastify/static';
+import fastifyView from '@fastify/view';
+import fastifyCookie from '@fastify/cookie';
+
 import { Route } from './Route.mjs';
 
 class RouteManager {
@@ -11,6 +17,45 @@ class RouteManager {
     constructor(options) {
         this.options = options;
         this.fastify = Fastify({ logger: options.log || false });
+    }
+
+    /**
+     * Use manager with static files.
+     * @param {object} options Static files options.
+     * @param {string} options.root Static files root path.
+     * @param {string?} options.prefix URL prefix for static files. (default '/public/')
+     */
+    withStatic(options) {
+        this.fastify.register(fastifyStatic, {
+            root: path.resolve(options.root),
+            prefix: options.prefix || '/public/',
+        });
+    }
+
+    /**
+     * Use manager with template views.
+     * @param {object} options Template engine options.
+     * @param {string} options.root Template files root path.
+     * @param {string} options.engine Template engine name.
+     * @param {object} options.plugin Template engine plugin function.
+     */
+    withView(options) {
+        const engine = {};
+        engine[options.engine] = options.plugin;
+
+        this.fastify.register(fastifyView, {
+            root: path.resolve(options.root),
+            engine: engine,
+        });
+    }
+
+    /**
+     * TODO: finish
+     * Use manager with cookie support.
+     * @param {object} options Cookie options.
+     */
+    withCookie(options) {
+        throw new Error('Unimplemented');
     }
 
     /**

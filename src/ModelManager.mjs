@@ -26,8 +26,6 @@ class ModelManager {
          */
         this.associationMap = new Map();
 
-        const logging = 
-
         this.sequelize = new Sequelize(
             options.database, 
             options.username, 

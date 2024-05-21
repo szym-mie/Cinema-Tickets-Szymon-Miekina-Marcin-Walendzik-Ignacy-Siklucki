@@ -13,9 +13,12 @@ import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 
 import { RouteManager } from './src/RouteManager.mjs';
 
+import mustache from 'mustache';
+
 import MainRoute from './src/route/MainRoute.mjs';
 
 
+// Database
 const modelManager = new ModelManager({
     database: 'cinema',
     username: 'postgres',
@@ -47,6 +50,17 @@ try {
 // HTTP
 const routeManager = new RouteManager({
     port: 3000,
+});
+
+routeManager.withStatic({
+    root: './public/',
+    prefix: '/public/'
+});
+
+routeManager.withView({
+    root: './template/',
+    engine: 'mustache',
+    plugin: mustache
 })
 
 routeManager.addRoute(MainRoute);
