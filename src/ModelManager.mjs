@@ -5,8 +5,16 @@ import { Association } from "./Association.mjs";
 class ModelManager {
     /**
      * @constructor
+     * @param {object} options Connection options.
+     * @param {string?} options.log Should log to console, defaults to no.
+     * @param {string} options.database Database to which the ORM should connect.
+     * @param {string} options.username Username for the ORM.
+     * @param {string} options.password Password for the ORM.
+     * @param {string?} options.host Database host, if empty then localhost.
+     * @param {string} options.dialect Database dialect.
      */
-    constructor() {
+    constructor(options) {
+        this.options = options;
         /**
          * @public
          * @type {Map<string, Model>}
@@ -17,6 +25,34 @@ class ModelManager {
          * @type {Map<string, Association>}
          */
         this.associationMap = new Map();
+
+        const logging = 
+
+        this.sequelize = new Sequelize(
+            options.database, 
+            options.username, 
+            options.password, 
+            {
+                logging: ModelManager.logging[options.log] || false,
+                host: options.host || 'localhost',
+                dialect: options.dialect,
+            }
+        );
+    }
+
+    /**
+     * Try connecting to a database and authenticating.
+     * @throws On connection error.
+     */
+    async connect() {
+        await this.sequelize.authenticate();
+    }
+
+    /**
+     * Close connection to the database.
+     */
+    async close() {
+        await this.sequelize.close();
     }
 
     /**
@@ -74,11 +110,11 @@ class ModelManager {
      * @param {boolean} shouldSync Should recreate table in database.
      * @returns Array on newly initialized models.
      */
-    async init(sequelize, shouldSync = false) {
+    async init(shouldSync = false) {
         // Wait for all models w/ instance to initialize.
         const initializedModels = await Promise.all(
             this.getUninitializedModels()
-            .map(model => model.init(sequelize, shouldSync))
+            .map(model => model.init(this.sequelize, shouldSync))
         );
 
         // Regenerate all associations.
@@ -86,6 +122,14 @@ class ModelManager {
         .forEach(assoc => assoc.initDefault());
 
         return initializedModels;
+    }
+
+    /**
+     * @private
+     */
+    static logging = {
+        'line': console.log,
+        'full': (...msgs) => console.log(msgs)
     }
 }
 

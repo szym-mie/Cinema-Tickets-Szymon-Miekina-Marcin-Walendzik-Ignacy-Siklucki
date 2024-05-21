@@ -1,4 +1,3 @@
-import { Sequelize } from 'sequelize';
 import { ModelManager } from './src/ModelManager.mjs';
 
 import MovieModel from './src/model/MovieModel.mjs';
@@ -6,27 +5,24 @@ import RoomModel from './src/model/RoomModel.mjs';
 import ShowModel from './src/model/ShowModel.mjs';
 import TicketModel from './src/model/TicketModel.mjs';
 import UserModel from './src/model/UserModel.mjs';
+
 import TicketUserAssoc from './src/assoc/TicketUserAssoc.mjs';
 import TicketShowAssoc from './src/assoc/TicketShowAssoc.mjs';
 import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
 import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
-import Fastify from 'fastify';
+
+import { RouteManager } from './src/RouteManager.mjs';
+
+import MainRoute from './src/route/MainRoute.mjs';
 
 
-// DB
-const db = new Sequelize('cinema', 'postgres', 'zaq1@WSX', {
-    host: 'localhost',
-    dialect: 'postgres'
+const modelManager = new ModelManager({
+    database: 'cinema',
+    username: 'postgres',
+    password: 'zaq1@WSX',
+    dialect: 'postgres',
+    log: 'full',
 });
-
-try {
-    await db.authenticate();
-    console.log('connected to database');
-} catch (error) {
-    console.error('cannot connect to database: ', error);
-}
-
-const modelManager = new ModelManager()
 
 modelManager.addModel(MovieModel);
 modelManager.addModel(RoomModel);
@@ -39,22 +35,20 @@ modelManager.addAssoc(TicketUserAssoc);
 modelManager.addAssoc(ShowMovieAssoc);
 modelManager.addAssoc(ShowRoomAssoc);
 
-await modelManager.init(db, false);
+try {
+    await modelManager.connect();
+    await modelManager.init(false);
+    console.log('connected to database.');
+} catch (e) {
+    console.error('cannot connect to database: ' + e);
+}
 
-const Movie = MovieModel.use();
-const Room = RoomModel.use();
-const Show = ShowModel.use();
-const Ticket = TicketModel.use();
-const User = UserModel.use();
 
 // HTTP
-const fastify = Fastify({});
+const routeManager = new RouteManager({
+    port: 3000,
+})
 
-fastify.get('/', {}, async (req, res) => {
-    // return { hello: '56' };
-    res.type('text/html');
-    const users = await User.findAll();
-    return '<h1>hello</h1>'+ JSON.stringify(users);
-});
+routeManager.addRoute(MainRoute);
 
-await fastify.listen({ port: 3000 });
+await routeManager.startServer();
