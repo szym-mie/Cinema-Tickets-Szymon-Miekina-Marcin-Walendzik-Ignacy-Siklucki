@@ -38,6 +38,7 @@ class RouteManager {
      * @param {string} options.root Template files root path.
      * @param {string} options.engine Template engine name.
      * @param {object} options.plugin Template engine plugin function.
+     * @param {object?} options.extra Engine specific options.
      */
     withView(options) {
         const engine = {};
@@ -46,16 +47,36 @@ class RouteManager {
         this.fastify.register(fastifyView, {
             root: path.resolve(options.root),
             engine: engine,
+            options: options.extra,
         });
     }
 
     /**
-     * TODO: finish
      * Use manager with cookie support.
      * @param {object} options Cookie options.
+     * @param {string} options.secret Cookie secret.
+     * @param {string?} options.hook When to parse the cookies.
+     * @param {object?} options.default Default cookie parsing methods.
      */
     withCookie(options) {
-        throw new Error('Unimplemented');
+        if (options.secret === undefined)
+            throw new Error('secret token was not provided.');
+        if (options.secret.length < 16)
+            throw new Error('Secret token is too short.');
+
+        const enforcedParseOptions = {
+            httpOnly: true,
+            signed: true,
+        };
+
+        const parseOptions = options.default || {}
+        Object.assign(parseOptions, enforcedParseOptions);
+
+        this.fastify.register(fastifyCookie, {
+            secret: options.secret,
+            hook: options.hook || 'onRequest',
+            parseOptions: parseOptions,
+        });
     }
 
     /**

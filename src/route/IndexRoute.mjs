@@ -6,6 +6,8 @@ const IndexRoute = new Route(
     async (_req, res) => {
         const users = await UserModel.use().findAll();
         const usersJSON = JSON.stringify(users);
+
+        res.setCookie('foo', 'bar', {});
         
         return res.viewAsync('index.mustache', { content: usersJSON });
     },

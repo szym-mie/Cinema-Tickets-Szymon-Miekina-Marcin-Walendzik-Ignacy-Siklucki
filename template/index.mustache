@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    {{! {{>header}} }}
 </head>
 <body>
     <nav>
@@ -16,12 +17,15 @@
             <div class="block">My profile</div>
         </div>
         <div class="logging">Log in</div>
+        {{! {{>navbar}} }}
     </nav>
     <main>
+        <h1>Hello there!</h1>
         {{content}}
     </main>
     <footer>
-        Szymon Miękina & Marcin Walendzik & Ignacy Siklucki <br/> 2024 
+        Szymon Miękina & Marcin Walendzik & Ignacy Siklucki <br/> 2024
+        {{! {{>footer}} }}
     </footer>
 </body>
 </html>

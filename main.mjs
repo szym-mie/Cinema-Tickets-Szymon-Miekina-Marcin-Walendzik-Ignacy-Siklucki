@@ -22,7 +22,7 @@ import IndexRoute from './src/route/IndexRoute.mjs';
 const modelManager = new ModelManager({
     database: 'cinema',
     username: 'postgres',
-    password: 'zaq1@WSX',
+    password: /*process.env.ORM_PASSWORD*/ 'zaq1@WSX',
     dialect: 'postgres',
     log: 'full',
 });
@@ -60,8 +60,20 @@ routeManager.withStatic({
 routeManager.withView({
     root: './template/',
     engine: 'mustache',
-    plugin: mustache
-})
+    plugin: mustache,
+    extra: {
+        partials: {
+            header: 'header.mustache',
+            navbar: 'navbar.mustache',
+            footer: 'footer.mustache',
+        },
+    },
+});
+
+routeManager.withCookie({
+    secret: /*process.env.COOKIE_SECRET*/ 'abcdefgh01234567',
+    default: { maxAge: 604_800 },
+});
 
 routeManager.addRoute(IndexRoute);
 
