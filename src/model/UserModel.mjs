@@ -1,40 +1,38 @@
-import { DataTypes } from "sequelize";
-import { Model } from "../Model.mjs";
+import { DataTypes } from 'sequelize';
+import { Model } from '../Model.mjs';
 
 const UserModel = new Model(
     'User',
     {
-        ID: {
+        id: {
             type: DataTypes.BIGINT,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
         },
-        UUID: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
-        },
-        Login: {
+        login: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                is: /[0-9a-zA-Z_]{4,64}/
+                is: /[0-9a-zA-Z_]{4,64}/,
             },
         },
-        Password: {
+        password: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        Email: {
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                is: /[0-9a-zA-Z_]+@[0-9a-zA-Z_.]+/
+                is: /[0-9a-zA-Z_]+@[0-9a-zA-Z_.]+/,
             },
         },
-        CurrentSessionUUID: {
-            type: DataTypes.UUID,
+        currentSession: {
+            type: DataTypes.STRING,
+            validate: {
+                is: /[0-9a-f]{96}/,
+            },
         },
     },
 );

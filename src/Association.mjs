@@ -1,4 +1,4 @@
-import { Model } from "./Model.mjs";
+import { Model } from './Model.mjs';
 
 class Association {
     /**
@@ -6,7 +6,7 @@ class Association {
      * @param {string} associationName Association name.
      * @param {object} associationDefinition Association defintion object.
      * @param {typeof AssociationType} associationDefinition.type Type of association.
-     * @param {Model} associationDefinition.from Source model. 
+     * @param {Model} associationDefinition.from Source model.
      * @param {Model} associationDefinition.to Target model.
      * @param {string?} associationDefinition.fromName Source model name.
      * @param {string?} associationDefinition.toName Target model name.
@@ -35,7 +35,7 @@ class Association {
      * @returns Model or model name.
      */
     getSource() {
-        return this.associationDefinition.from;        
+        return this.associationDefinition.from;
     }
 
     /**
@@ -63,7 +63,8 @@ class Association {
             const typeConstructor = this.associationDefinition.type;
             const type = new typeConstructor(this.getOptions());
             type.apply(source, target);
-        } else {
+        }
+        else {
             throw new Error('Source or target in association ' + this.associationName + 'is undefined');
         }
     }
@@ -101,7 +102,7 @@ class OneToOne extends AssociationType {
     apply(source, target) {
         source.modelConstructor.hasOne(
             target.modelConstructor,
-            { foreignKey: this.options.field }
+            { foreignKey: this.options.field },
         );
         target.modelConstructor.belongsTo(source.modelConstructor);
     }
@@ -116,7 +117,7 @@ class OneToMany extends AssociationType {
     apply(source, target) {
         source.modelConstructor.hasMany(
             target.modelConstructor,
-            { foreignKey: this.options.field }
+            { foreignKey: this.options.field },
         );
         target.modelConstructor.belongsTo(source.modelConstructor);
     }
@@ -131,19 +132,19 @@ class ManyToMany extends AssociationType {
     apply(source, target) {
         source.modelConstructor.belongsToMany(
             target.modelConstructor,
-            { through: this.options.junction }
+            { through: this.options.junction },
         );
         target.modelConstructor.belongsToMany(
             source.modelConstructor,
-            { through: this.options.junction }
+            { through: this.options.junction },
         );
     }
 }
 
-const AssociationTypes =  {
+const AssociationTypes = {
     OneToOne: OneToOne,
     OneToMany: OneToMany,
     ManyToMany: ManyToMany,
-}
+};
 
 export { Association, AssociationTypes };

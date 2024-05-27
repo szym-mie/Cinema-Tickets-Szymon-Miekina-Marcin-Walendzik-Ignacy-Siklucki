@@ -1,10 +1,10 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from 'sequelize';
 
 class Model {
     /**
      * @constructor
-     * @param {string} modelName 
-     * @param {object} modelDefinition 
+     * @param {string} modelName Name of this model.
+     * @param {object} modelDefinition Definition for this model.
      */
     constructor(modelName, modelDefinition) {
         this.modelName = modelName;
@@ -40,11 +40,11 @@ class Model {
      */
     async init(sequelize, shouldSync = false) {
         const model = sequelize.define(
-            this.modelName, 
-            this.modelDefinition, 
+            this.modelName,
+            this.modelDefinition,
             { freezeTableName: true });
-        
-        if (shouldSync) 
+
+        if (shouldSync)
             await model.sync();
 
         this.modelConstructor = model;

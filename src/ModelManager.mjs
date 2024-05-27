@@ -1,6 +1,5 @@
-import { Sequelize } from "sequelize";
-import { Model } from "./Model.mjs";
-import { Association } from "./Association.mjs";
+import { Sequelize } from 'sequelize';
+import { Transaction } from './Transaction.mjs';
 
 class ModelManager {
     /**
@@ -27,14 +26,14 @@ class ModelManager {
         this.associationMap = new Map();
 
         this.sequelize = new Sequelize(
-            options.database, 
-            options.username, 
-            options.password, 
+            options.database,
+            options.username,
+            options.password,
             {
                 logging: ModelManager.logging[options.log] || false,
                 host: options.host || 'localhost',
                 dialect: options.dialect,
-            }
+            },
         );
     }
 
@@ -92,7 +91,7 @@ class ModelManager {
     getUninitializedModels() {
         return [...this.modelMap.values()].filter(def => !def.isInit());
     }
-    
+
     /**
      * Find a model by model name.
      * @param {string} modelName Model name.
@@ -112,23 +111,27 @@ class ModelManager {
         // Wait for all models w/ instance to initialize.
         const initializedModels = await Promise.all(
             this.getUninitializedModels()
-            .map(model => model.init(this.sequelize, shouldSync))
+                .map(model => model.init(this.sequelize, shouldSync)),
         );
 
         // Regenerate all associations.
         this.getAllAssociations()
-        .forEach(assoc => assoc.initDefault());
+            .forEach(assoc => assoc.initDefault());
 
         return initializedModels;
+    }
+
+    async newTransaction() {
+        return new Transaction(await this.sequelize.transaction());
     }
 
     /**
      * @private
      */
     static logging = {
-        'line': console.log,
-        'full': (...msgs) => console.log(msgs)
-    }
+        line: console.log,
+        full: (...msgs) => console.log(msgs),
+    };
 }
 
 export { ModelManager };

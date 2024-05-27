@@ -60,7 +60,7 @@ class RouteManager {
      */
     withCookie(options) {
         if (options.secret === undefined)
-            throw new Error('secret token was not provided.');
+            throw new Error('Secret token was not provided.');
         if (options.secret.length < 16)
             throw new Error('Secret token is too short.');
 
@@ -69,7 +69,7 @@ class RouteManager {
             signed: true,
         };
 
-        const parseOptions = options.default || {}
+        const parseOptions = options.default || {};
         Object.assign(parseOptions, enforcedParseOptions);
 
         this.fastify.register(fastifyCookie, {
@@ -85,7 +85,7 @@ class RouteManager {
      */
     addRoute(route) {
         if (!this.fastify.hasRoute(route.getSignature()))
-            this.fastify.route(route.createRouteOptions())
+            this.fastify.route(route.createRouteOptions());
         else
             throw new Error('Route ' + route.getPath() + ' was already added.');
     }

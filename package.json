@@ -12,11 +12,16 @@
     "@fastify/cookie": "^9.3.1",
     "@fastify/static": "^7.0.4",
     "@fastify/view": "^9.1.0",
-    "ejs": "^3.1.10",
     "fastify": "^4.27.0",
     "mustache": "^4.2.0",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.3.0",
+    "@stylistic/eslint-plugin": "^2.1.0",
+    "eslint": "^9.3.0",
+    "globals": "^15.3.0"
   }
 }

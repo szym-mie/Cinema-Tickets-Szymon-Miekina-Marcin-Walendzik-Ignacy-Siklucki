@@ -1,20 +1,20 @@
-import { DataTypes } from "sequelize";
-import { Model } from "../Model.mjs";
+import { DataTypes } from 'sequelize';
+import { Model } from '../Model.mjs';
 
 const RoomModel = new Model(
     'Room',
     {
-        ID: {
-            type: DataTypes.TINYINT,
+        id: {
+            type: DataTypes.SMALLINT,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
         },
-        Number: {
+        number: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        Seats: {
+        seats: {
             type: DataTypes.SMALLINT,
             allowNull: false,
         },

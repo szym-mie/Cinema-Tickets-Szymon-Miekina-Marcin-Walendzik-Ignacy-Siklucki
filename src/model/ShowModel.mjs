@@ -1,28 +1,28 @@
-import { DataTypes } from "sequelize";
-import { Model } from "../Model.mjs";
+import { DataTypes } from 'sequelize';
+import { Model } from '../Model.mjs';
 
 const ShowModel = new Model(
     'Show',
     {
-        ID: {
+        id: {
             type: DataTypes.BIGINT,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
         },
-        MovieID: {
+        movieId: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        RoomID: {
-            type: DataTypes.TINYINT,
+        roomId: {
+            type: DataTypes.SMALLINT,
             allowNull: false,
         },
-        StartTime: {
+        startTime: {
             type: DataTypes.TIME,
             allowNull: false,
         },
-    }
+    },
 );
 
 export default ShowModel;

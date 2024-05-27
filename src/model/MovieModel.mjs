@@ -1,28 +1,28 @@
-import { DataTypes } from "sequelize";
-import { Model } from "../Model.mjs";
+import { DataTypes } from 'sequelize';
+import { Model } from '../Model.mjs';
 
 const MovieModel = new Model(
     'Movie',
     {
-        ID: {
+        id: {
             type: DataTypes.BIGINT,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
         },
-        Title: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        Description: {
-            type: DataTypes.STRING,
+        description: {
+            type: DataTypes.TEXT,
             allowNull: false,
         },
-        Year: {
+        year: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        Runtime: {
+        runtime: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },

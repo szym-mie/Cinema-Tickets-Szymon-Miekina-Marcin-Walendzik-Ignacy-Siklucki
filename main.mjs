@@ -15,16 +15,18 @@ import { RouteManager } from './src/RouteManager.mjs';
 
 import mustache from 'mustache';
 
-import IndexRoute from './src/route/IndexRoute.mjs';
-
+import IndexRoute from './src/route/html/IndexRoute.mjs';
+import LoginEndpoint from './src/route/rest/LoginEndpoint.mjs';
+import SignUpEndpoint from './src/route/rest/SignUpEndpoint.mjs';
+import BookEndpoint from './src/route/rest/BookEndpoint.mjs';
 
 // Database
 const modelManager = new ModelManager({
     database: 'cinema',
     username: 'postgres',
-    password: /*process.env.ORM_PASSWORD*/ 'zaq1@WSX',
+    password: /* process.env.ORM_PASSWORD */ 'zaq1@WSX',
     dialect: 'postgres',
-    log: 'full',
+    log: 'line',
 });
 
 modelManager.addModel(MovieModel);
@@ -42,10 +44,10 @@ try {
     await modelManager.connect();
     await modelManager.init(false);
     console.log('connected to database.');
-} catch (e) {
+}
+catch (e) {
     console.error('cannot connect to database: ' + e);
 }
-
 
 // HTTP
 const routeManager = new RouteManager({
@@ -54,7 +56,7 @@ const routeManager = new RouteManager({
 
 routeManager.withStatic({
     root: './public/',
-    prefix: '/public/'
+    prefix: '/public/',
 });
 
 routeManager.withView({
@@ -71,10 +73,13 @@ routeManager.withView({
 });
 
 routeManager.withCookie({
-    secret: /*process.env.COOKIE_SECRET*/ 'abcdefgh01234567',
+    secret: /* process.env.COOKIE_SECRET */ 'abcdefgh01234567',
     default: { maxAge: 604_800 },
 });
 
 routeManager.addRoute(IndexRoute);
+routeManager.addRoute(LoginEndpoint);
+routeManager.addRoute(SignUpEndpoint);
+routeManager.addRoute(BookEndpoint);
 
 await routeManager.startServer();

@@ -1,26 +1,33 @@
-import { DataTypes } from "sequelize";
-import { Model } from "../Model.mjs";
+import { DataTypes } from 'sequelize';
+import { Model } from '../Model.mjs';
 
 const TicketModel = new Model(
     'Ticket',
     {
-        ID: {
+        id: {
             type: DataTypes.BIGINT,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
         },
-        UserID: {
+        token: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validation: {
+                is: /[0-9a-f]{96}/,
+            },
+        },
+        userId: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        ShowID: {
+        showId: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        SeatNumber: {
+        seatNumber: {
             type: DataTypes.SMALLINT,
-            allowNull: false
+            allowNull: false,
         },
     },
 );

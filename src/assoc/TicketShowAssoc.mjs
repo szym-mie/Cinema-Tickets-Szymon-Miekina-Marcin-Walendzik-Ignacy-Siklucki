@@ -1,6 +1,6 @@
-import { Association, AssociationTypes } from "../Association.mjs";
-import TicketModel from "../model/TicketModel.mjs";
-import ShowModel from "../model/ShowModel.mjs";
+import { Association, AssociationTypes } from '../Association.mjs';
+import TicketModel from '../model/TicketModel.mjs';
+import ShowModel from '../model/ShowModel.mjs';
 
 const TicketShowAssoc = new Association(
     'Ticket<-Show',
@@ -8,7 +8,7 @@ const TicketShowAssoc = new Association(
         type: AssociationTypes.OneToMany,
         from: ShowModel,
         to: TicketModel,
-        field: 'ShowID',
+        field: 'showId',
     },
 );
 

@@ -19,7 +19,7 @@ class Route {
      */
     getSignature() {
         return {
-            url: this.url, 
+            url: this.url,
             method: this.method,
         };
     }
@@ -52,7 +52,7 @@ class Route {
             method: this.method,
             preHandler: this.setReplyType.bind(this),
             handler: this.handler.bind(this),
-        }
+        };
     }
 }
 
