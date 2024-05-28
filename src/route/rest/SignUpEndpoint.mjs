@@ -1,4 +1,5 @@
 import { Route } from '../../Route.mjs';
+import { Status } from '../../Status.mjs';
 import UserModel from '../../model/UserModel.mjs';
 
 const SignUpEndpoint = new Route(
@@ -18,12 +19,12 @@ const SignUpEndpoint = new Route(
                 password: data.password,
                 email: data.email,
             });
-            return { status: 'ok' };
+            return Status.ok();
         }
         catch (e) {
             // FIXME: testing
             console.error(e);
-            return { status: 'error' };
+            return Status.error(e);
         }
     },
 );

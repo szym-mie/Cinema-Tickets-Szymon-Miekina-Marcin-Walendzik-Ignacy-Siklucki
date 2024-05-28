@@ -2,7 +2,8 @@ import { Route } from '../../Route.mjs';
 import TicketModel from '../../model/TicketModel.mjs';
 import UserModel from '../../model/UserModel.mjs';
 import { Security } from '../../Security.mjs';
-import { Session } from './Session.mjs';
+import { Session } from '../../Session.mjs';
+import { Status } from '../../Status.mjs';
 
 const BookEndpoint = new Route(
     'POST', '/book', 'application/json',
@@ -22,7 +23,7 @@ const BookEndpoint = new Route(
 
         try {
             const user = await User.findOne(session.byRef());
-            const userId = user.get().id;
+            const userId = user.id;
 
             await Ticket.create({
                 token: ticketToken,
@@ -30,11 +31,11 @@ const BookEndpoint = new Route(
                 showId: showId,
                 seatNumber: seatNumber,
             });
-            return { status: 'ok' };
+            return Status.ok();
         }
         catch (e) {
             console.error(e);
-            return { status: 'error' };
+            return Status.error(e);
         }
     },
 );

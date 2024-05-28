@@ -1,4 +1,4 @@
-import { Security } from '../../Security.mjs';
+import { Security } from './Security.mjs';
 
 class Session {
     /**
