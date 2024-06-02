@@ -1,5 +1,6 @@
 import { ModelManager } from './src/ModelManager.mjs';
 
+import LogModel from './src/model/LogModel.mjs';
 import MovieModel from './src/model/MovieModel.mjs';
 import RoomModel from './src/model/RoomModel.mjs';
 import ShowModel from './src/model/ShowModel.mjs';
@@ -29,6 +30,7 @@ const modelManager = new ModelManager({
     log: 'line',
 });
 
+modelManager.addModel(LogModel);
 modelManager.addModel(MovieModel);
 modelManager.addModel(RoomModel);
 modelManager.addModel(ShowModel);

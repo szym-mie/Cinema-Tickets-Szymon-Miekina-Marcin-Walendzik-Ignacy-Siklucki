@@ -1,3 +1,4 @@
+import { Logging } from '../../Logging.mjs';
 import { Route } from '../../Route.mjs';
 import { Status } from '../../Status.mjs';
 import UserModel from '../../model/UserModel.mjs';
@@ -19,11 +20,12 @@ const SignUpEndpoint = new Route(
                 password: data.password,
                 email: data.email,
             });
+            Logging.logInfo(data.login + ' signed up', 'User');
             return Status.ok();
         }
         catch (e) {
-            // FIXME: testing
             console.error(e);
+            Logging.logInfo(data.login + ' failed to sign up', 'User');
             return Status.error(e);
         }
     },

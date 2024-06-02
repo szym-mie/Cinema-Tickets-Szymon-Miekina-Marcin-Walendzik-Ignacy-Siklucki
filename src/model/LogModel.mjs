@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { Model } from '../Model.mjs';
 
-const MovieModel = new Model(
-    'Movie',
+const LogModel = new Model(
+    'Log',
     {
         // Primary key
         id: {
@@ -11,27 +11,25 @@ const MovieModel = new Model(
             autoIncrement: true,
             primaryKey: true,
         },
-        // Movie title
-        title: {
+        // Log type - INFO, ERROR
+        type: {
             type: DataTypes.STRING,
             allowNull: false,
+            validator: {
+                isIn: [['INFO', 'ERROR']],
+            },
         },
-        // Not short description of this movie
-        description: {
+        // Log message - what happened
+        message: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        // Year released
-        year: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        // Runtime in minutes
-        runtime: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+        // Topic of the log - if possible name of the table modified
+        about: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
     },
 );
 
-export default MovieModel;
+export default LogModel;

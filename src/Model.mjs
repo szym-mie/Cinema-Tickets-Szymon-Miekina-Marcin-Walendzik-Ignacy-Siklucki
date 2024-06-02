@@ -35,7 +35,7 @@ class Model {
     /**
      * Intialize, by creating and returning model constructor.
      * @param {Sequelize} sequelize Sequalize instance.
-     * @param {boolean} shouldSync Should recreate table in database.
+     * @param {boolean} shouldSync Should create table in database.
      * @returns Newly created model constructor.
      */
     async init(sequelize, shouldSync = false) {
