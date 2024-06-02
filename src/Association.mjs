@@ -8,6 +8,8 @@ class Association {
      * @param {typeof AssociationType} associationDefinition.type Type of association.
      * @param {Model} associationDefinition.from Source model.
      * @param {Model} associationDefinition.to Target model.
+     * @param {string} associationDefinition.fromGetterField Source model getter field.
+     * @param {string} associationDefinition.toGetterField Target model getter field.
      * @param {string?} associationDefinition.fromName Source model name.
      * @param {string?} associationDefinition.toName Target model name.
      * @param {string} associationDefinition.field Field name for foreign key.
@@ -77,6 +79,8 @@ class AssociationType {
     /**
      * @constructor
      * @param {object} options Type options.
+     * @param {string} options.fromGetterField Source model getter field.
+     * @param {string} options.toGetterField Target model getter field.
      * @param {string} options.field Field in target model to use.
      * @param {string} options.junction Junction model name.
      */
@@ -102,9 +106,17 @@ class OneToOne extends AssociationType {
     apply(source, target) {
         source.modelConstructor.hasOne(
             target.modelConstructor,
-            { foreignKey: this.options.field },
+            {
+                as: this.options.fromGetterField,
+                foreignKey: this.options.field,
+            },
         );
-        target.modelConstructor.belongsTo(source.modelConstructor);
+        target.modelConstructor.belongsTo(
+            source.modelConstructor,
+            {
+                as: this.options.toGetterField,
+            },
+        );
     }
 }
 
@@ -117,9 +129,18 @@ class OneToMany extends AssociationType {
     apply(source, target) {
         source.modelConstructor.hasMany(
             target.modelConstructor,
-            { foreignKey: this.options.field },
+            {
+                as: this.options.fromGetterField,
+                foreignKey: this.options.field,
+            },
         );
-        // target.modelConstructor.belongsTo(source.modelConstructor);
+        target.modelConstructor.belongsTo(
+            source.modelConstructor,
+            {
+                as: this.options.toGetterField,
+                foreignKey: this.options.field,
+            },
+        );
     }
 }
 
@@ -132,11 +153,17 @@ class ManyToMany extends AssociationType {
     apply(source, target) {
         source.modelConstructor.belongsToMany(
             target.modelConstructor,
-            { through: this.options.junction },
+            {
+                as: this.options.fromGetterField,
+                through: this.options.junction,
+            },
         );
         target.modelConstructor.belongsToMany(
             source.modelConstructor,
-            { through: this.options.junction },
+            {
+                as: this.options.toGetterField,
+                through: this.options.junction,
+            },
         );
     }
 }

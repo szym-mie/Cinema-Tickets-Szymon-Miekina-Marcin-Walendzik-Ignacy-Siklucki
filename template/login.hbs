@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+</head>
+<body>
+    {{>navbar}}
+    <main>
+        <h1>Login</h1>
+        <form id="form">
+            <label for="login"><b>Login</b></label>
+            <input type="text" placeholder="Enter login" name="login" required><br>
+        
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required><br>
+        
+            <button id="submit" type="button">Login</button><br>
+
+            <p id="result"> </p>
+        </form>
+        <a href="/signup">No account? Sign up</a><br>
+        <script>
+            const form = document.getElementById('form');
+            const submit = document.getElementById('submit');
+            const result = document.getElementById('result');
+
+            const submitForm = () => {
+                const data = {};
+
+                for (const input of form.getElementsByTagName('input')) {
+                    data[input.name] = input.value;
+                }
+
+                fetch('/login', { 
+                    method: 'POST', 
+                    credentials: 'include', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify(data) 
+                })
+                .then(res => res.json())
+                .then(json => {
+                    console.log(json);
+                    result.innerText = json.reason;
+                })
+                console.log(data);
+            }
+
+            submit.addEventListener('click', submitForm);
+        </script>
+    </main>
+    {{>footer}}
+</body>
+</html>

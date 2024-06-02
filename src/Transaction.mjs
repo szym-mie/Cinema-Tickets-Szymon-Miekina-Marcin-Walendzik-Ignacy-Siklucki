@@ -7,6 +7,10 @@ class Transaction {
         return { transaction: this.transaction };
     }
 
+    wrap(options) {
+        return Object.assign(options, this.use());
+    }
+
     async of(body) {
         try {
             await body(this);

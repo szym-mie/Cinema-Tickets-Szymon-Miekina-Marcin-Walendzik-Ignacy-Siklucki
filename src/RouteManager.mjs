@@ -19,6 +19,11 @@ class RouteManager {
         this.fastify = Fastify({ logger: options.log || false });
     }
 
+    withContext(context) {
+        for (const [key, value] of Object.entries(context))
+            this.fastify.decorateRequest(key, value);
+    }
+
     /**
      * Use manager with static files.
      * @param {object} options Static files options.

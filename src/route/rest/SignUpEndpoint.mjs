@@ -29,7 +29,7 @@ const SignUpEndpoint = new Route(
             if (e instanceof ValidationError)
                 Logging.logInfo('User ' + data.login + ' failed to sign up - ' + e.message, 'User');
             else
-                Logging.logError('Signup failed', 'User');
+                Logging.logError('Signup failed - ' + e.message, 'User');
             return Status.error(e);
         }
     },

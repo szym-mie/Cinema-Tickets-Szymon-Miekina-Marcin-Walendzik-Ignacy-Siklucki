@@ -25,7 +25,7 @@ const ProfileRoute = new Route(
 
             console.log(tickets);
 
-            return res.viewAsync('profile.html', { helloName: user.login, tickets: tickets });
+            return res.viewAsync('profile.hbs', { helloName: user.login, tickets: tickets });
         }
         catch (e) {
             console.error(e);

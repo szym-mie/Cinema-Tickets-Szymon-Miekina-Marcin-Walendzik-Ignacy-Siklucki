@@ -7,7 +7,9 @@ const ShowMovieAssoc = new Association(
     {
         type: AssociationTypes.OneToMany,
         from: MovieModel,
+        fromGetterField: 'shows',
         to: ShowModel,
+        toGetterField: 'movie',
         field: 'movieId',
     },
 );

@@ -7,7 +7,9 @@ const ShowRoomAssoc = new Association(
     {
         type: AssociationTypes.OneToMany,
         from: RoomModel,
+        fromGetterField: 'shows',
         to: ShowModel,
+        toGetterField: 'room',
         field: 'roomId',
     },
 );

@@ -7,7 +7,9 @@ const TicketUserAssoc = new Association(
     {
         type: AssociationTypes.OneToMany,
         from: UserModel,
+        fromGetterField: 'tickets',
         to: TicketModel,
+        toGetterField: 'user',
         field: 'userId',
     },
 );

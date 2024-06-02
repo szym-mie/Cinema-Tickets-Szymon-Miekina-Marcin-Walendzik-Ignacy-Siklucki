@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+</head>
+<body>
+    <main>
+        <h1>Admin Panel - all logs</h1>
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>About</th>
+                <th>Message</th>
+            </tr>
+            {{#logs}}
+                <tr class="log-row-{{type}}">
+                    <td>{{eventTime}}</td>
+                    <td>{{about}}</td>
+                    <td>{{message}}</td>
+                </tr>
+            {{/logs}}
+        </table>
+    </main>
+</body>
+</html>

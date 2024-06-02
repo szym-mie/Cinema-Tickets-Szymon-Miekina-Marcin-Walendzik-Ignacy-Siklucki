@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+</head>
+<body>
+    {{>navbar}}
+    <main>
+        <h1>Hello {{helloName}}!</h1>
+        {{#tickets}}
+            <div>
+                <p>token: {{token}}</p>
+            </div>
+        {{/tickets}}
+    </main>
+    {{>footer}}
+</body>
+</html>

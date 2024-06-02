@@ -1,14 +1,15 @@
 body {
+    background-color: #2B2A2D;
     margin: 0;
 }
 
 * {
-    background-color: #2B2A2D;
     color: #dcdcdc;
     font-family: sans-serif;
 }
 
 input, button {
+    background-color: #2B2A2D;
     border: 1px solid #dcdcdc;
     border-radius: 1em;
     padding: 0.5em;
@@ -95,6 +96,23 @@ nav {
     margin: auto;
     justify-content: center;
     align-items: center;
+}
+
+
+.log-row-INFO:nth-of-type(odd) {
+    background-color: #102254;
+}
+
+.log-row-INFO:nth-of-type(even) {
+    background-color: #132a69;
+}
+
+.log-row-ERROR:nth-of-type(odd) {
+    background-color: #500b00;
+}
+
+.log-row-ERROR:nth-of-type(even) {
+    background-color: #710f00;
 }
 
 main {
