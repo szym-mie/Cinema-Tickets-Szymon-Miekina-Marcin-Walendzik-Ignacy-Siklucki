@@ -1,3 +1,4 @@
+import { ValidationError } from 'sequelize';
 import { Logging } from '../../Logging.mjs';
 import { Route } from '../../Route.mjs';
 import { Status } from '../../Status.mjs';
@@ -20,12 +21,15 @@ const SignUpEndpoint = new Route(
                 password: data.password,
                 email: data.email,
             });
-            Logging.logInfo(data.login + ' signed up', 'User');
+            Logging.logInfo('User ' + data.login + ' signed up', 'User');
             return Status.ok();
         }
         catch (e) {
             console.error(e);
-            Logging.logInfo(data.login + ' failed to sign up', 'User');
+            if (e instanceof ValidationError)
+                Logging.logInfo('User ' + data.login + ' failed to sign up - ' + e.message, 'User');
+            else
+                Logging.logError('Signup failed', 'User');
             return Status.error(e);
         }
     },

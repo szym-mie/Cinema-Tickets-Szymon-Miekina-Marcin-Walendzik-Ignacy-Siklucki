@@ -44,7 +44,7 @@ modelManager.addAssoc(ShowRoomAssoc);
 
 try {
     await modelManager.connect();
-    await modelManager.init(false);
+    await modelManager.init(true);
     console.log('connected to database.');
 }
 catch (e) {
