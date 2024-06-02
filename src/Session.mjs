@@ -53,7 +53,17 @@ class Session {
         if (Security.isTokenSecure(token, { exactSize: this.tokenBytes }))
             return new this(token);
         else
-            throw new Error('Insecure token passed (required ' + Session.tokenBytes + ' bytes)');
+            throw new Error('Insecure token passed (required ' + Session.tokenBytes + ' bytes, passed ' + token.length / 2 + ' bytes)');
+    }
+
+    /**
+     * Get token from a cookie
+     * @param {object} cookie Session cookie.
+     * @param {string} cookie.value Cookie token string.
+     * @returns {Session} Remote secure session.
+     */
+    static fromCookie(cookie) {
+        return Session.fromToken(cookie.value);
     }
 
     /**

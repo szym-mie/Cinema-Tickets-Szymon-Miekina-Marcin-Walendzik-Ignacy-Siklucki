@@ -119,7 +119,7 @@ class OneToMany extends AssociationType {
             target.modelConstructor,
             { foreignKey: this.options.field },
         );
-        target.modelConstructor.belongsTo(source.modelConstructor);
+        // target.modelConstructor.belongsTo(source.modelConstructor);
     }
 }
 

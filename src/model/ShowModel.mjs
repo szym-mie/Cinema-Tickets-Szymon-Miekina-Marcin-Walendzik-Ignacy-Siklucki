@@ -21,6 +21,11 @@ const ShowModel = new Model(
             type: DataTypes.SMALLINT,
             allowNull: false,
         },
+        // Day of the movie
+        startDate: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
         // Start time of a movie
         startTime: {
             type: DataTypes.TIME,

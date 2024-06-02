@@ -10,7 +10,7 @@ const BookEndpoint = new Route(
     async (req, _res) => {
         const data = req.body;
 
-        const sessionToken = req.unsignCookie(req.cookies.sessionToken);
+        const sessionToken = req.unsignCookie(req.cookies.currentSession);
         const session = Session.fromToken(sessionToken);
 
         const ticketToken = Security.createSecureToken(48);

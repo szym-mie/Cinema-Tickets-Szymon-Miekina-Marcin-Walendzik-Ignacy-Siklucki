@@ -118,6 +118,9 @@ class ModelManager {
         this.getAllAssociations()
             .forEach(assoc => assoc.initDefault());
 
+        if (shouldSync)
+            this.sequelize.sync({ alter: true });
+
         return initializedModels;
     }
 

@@ -52,7 +52,7 @@ class Security {
      * @param {number} minSize Exact size of token.
      * @returns {boolean} Does token pass this test.
      */
-    static testMinSize(token, minSize) {
+    static testExactSize(token, minSize) {
         return token.length === minSize * 2;
     }
 

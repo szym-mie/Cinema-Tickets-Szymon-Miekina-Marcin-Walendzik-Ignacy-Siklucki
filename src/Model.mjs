@@ -45,7 +45,7 @@ class Model {
             { freezeTableName: true });
 
         if (shouldSync)
-            await model.sync();
+            await model.sync({ alter: true });
 
         this.modelConstructor = model;
         return model;
