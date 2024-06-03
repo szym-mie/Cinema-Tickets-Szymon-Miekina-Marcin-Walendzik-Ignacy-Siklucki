@@ -56,4 +56,9 @@ class Route {
     }
 }
 
-export { Route };
+class ReplyType {
+    static JSON = 'application/json';
+    static HTML = 'text/html';
+}
+
+export { Route, ReplyType };

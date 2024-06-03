@@ -28,8 +28,10 @@ class Association {
     getOptions() {
         const field = this.associationDefinition.field;
         const junction = this.associationDefinition.junction;
+        const fromGetterField = this.associationDefinition.fromGetterField;
+        const toGetterField = this.associationDefinition.toGetterField;
 
-        return { field, junction };
+        return { field, junction, fromGetterField, toGetterField };
     }
 
     /**

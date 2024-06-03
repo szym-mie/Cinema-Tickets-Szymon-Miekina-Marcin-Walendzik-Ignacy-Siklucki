@@ -7,7 +7,7 @@ class Transaction {
         return { transaction: this.transaction };
     }
 
-    wrap(options) {
+    wrap(options = {}) {
         return Object.assign(options, this.use());
     }
 

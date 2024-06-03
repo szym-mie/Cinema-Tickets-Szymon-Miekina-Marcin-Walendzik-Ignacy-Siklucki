@@ -1,10 +1,10 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import MovieModel from '../../model/MovieModel.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
 import { Op } from 'sequelize';
 
 const MovieRoute = new Route(
-    'GET', '/movie/:id', 'text/html',
+    'GET', '/movie/:id', ReplyType.HTML,
     async (_req, res) => {
         const id = _req.params.id;
         console.log('ID FILMU' + id);

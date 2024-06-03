@@ -21,6 +21,10 @@ const MovieModel = new Model(
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        // URL to the poster
+        posterUrl: {
+            type: DataTypes.STRING,
+        },
         // Year released
         year: {
             type: DataTypes.INTEGER,

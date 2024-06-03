@@ -1,8 +1,8 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import LogModel from '../../model/LogModel.mjs';
 
 const LogsRoute = new Route(
-    'GET', '/logs', 'text/html',
+    'GET', '/logs', ReplyType.HTML,
     async (_req, res) => {
         const Log = LogModel.use();
 

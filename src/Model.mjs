@@ -36,16 +36,17 @@ class Model {
      * Intialize, by creating and returning model constructor.
      * @param {Sequelize} sequelize Sequalize instance.
      * @param {boolean} shouldSync Should create table in database.
+     * @param {boolean} shouldNuke Should nuke all data force syncing
      * @returns Newly created model constructor.
      */
-    async init(sequelize, shouldSync = false) {
+    async init(sequelize, shouldSync = false, shouldNuke = false) {
         const model = sequelize.define(
             this.modelName,
             this.modelDefinition,
             { freezeTableName: true });
 
         if (shouldSync)
-            await model.sync({ alter: true });
+            await model.sync({ alter: true, force: shouldNuke });
 
         this.modelConstructor = model;
         return model;

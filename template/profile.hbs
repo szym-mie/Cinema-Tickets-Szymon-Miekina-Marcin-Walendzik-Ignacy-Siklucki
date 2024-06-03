@@ -7,11 +7,11 @@
     {{>navbar}}
     <main>
         <h1>Hello {{helloName}}!</h1>
-        {{#tickets}}
+        {{#each tickets}}
             <div>
-                <p>token: {{token}}</p>
+                <p>token: {{this.token}}</p>
             </div>
-        {{/tickets}}
+        {{/each}}
     </main>
     {{>footer}}
 </body>

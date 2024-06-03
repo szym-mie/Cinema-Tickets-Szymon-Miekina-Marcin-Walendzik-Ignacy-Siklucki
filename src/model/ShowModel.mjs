@@ -11,27 +11,22 @@ const ShowModel = new Model(
             autoIncrement: true,
             primaryKey: true,
         },
-        // // ID of shown movie
+        // ID of shown movie
         movieId: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        // // ID of used room
+        // ID of used room
         roomId: {
             type: DataTypes.SMALLINT,
             allowNull: false,
         },
-        // // Day of the movie
-        // startDate: {
-        //     type: DataTypes.DATEONLY,
-        //     allowNull: false,
-        // },
-        // // Start time of a movie
+        // Start time of a movie
         startTime: {
             type: DataTypes.DATE,
             allowNull: false,
         },
-        // // Price per ticket
+        // Price per ticket
         price: {
             type: DataTypes.DECIMAL,
             allowNull: false,

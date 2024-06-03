@@ -42,7 +42,10 @@
                     .then(res => res.json())
                     .then(json => {
                         console.log(json);
-                        result.innerText = json.reason;
+                        if (json.status === 'ok')
+                            window.location.href = '/profile';
+                        else
+                            result.innerText = json.reason;
                     })
                 console.log(data);
             }

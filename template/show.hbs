@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+</head>
+<body>
+    {{>navbar}}
+    <main>
+        <div class="reservation">
+            <div></div>
+            <div class="room-schema">
+                <div class="seats-container">
+                        {{#each seats}}
+                            <div class="seat">
+                                {{#if this.isBooked}}
+                                    <div class="booked">{{this.number}}</div>
+                                {{else}}
+                                    <div class="not-booked" onclick="toggleSeat(this)">{{this.number}}</div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                </div>
+                <div class="screen-container">
+                    <div class="screen">SCREEN</div>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="poster-div-res" style="background-image: url({{movie.posterUrl}})"></div>
+                <h2>{{movie.title}}</h2>
+                <div class="date">
+                    {{date.day}}/{{date.month}}/{{date.year}}<br/>
+                    {{date.hour}}:{{date.minutes}}
+                </div>
+                <div class="room-text">
+                    <p>Nr sali: {{room.number}}</p>
+                    <p>Ilość miejsc: {{room.seats}}</p>
+                </div>
+                <button onclick="bookShow()" type="button">Book now!</button><br>
+
+            </div>
+            <div></div>
+        </div>
+        <p id="showId" style="display: none;">{{show.id}}</p>
+    </main>
+    {{>footer}}
+    <script>
+        function toggleSeat(element) {
+            if (element.classList.contains('not-booked')) {
+                element.classList.remove('not-booked');
+                element.classList.add('taken');
+            } else if (element.classList.contains('taken')) {
+                element.classList.remove('taken');
+                element.classList.add('not-booked');
+            }
+        }
+
+        function bookShow() {
+            const data = {
+                showId: parseInt(document.getElementById('showId').innerText),
+                seatNumbers: [...document.querySelectorAll('.taken').values()].map(e => parseInt(e.innerText)),
+            };
+
+            console.log(data);
+
+            fetch('/book_show', { 
+                method: 'POST', 
+                credentials: 'include', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data) 
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json.status === 'ok')
+                    window.location.href = '/profile';
+                else
+                    window.location.href = '/login';
+            })
+        }
+    </script>
+
+</body>
+</html>

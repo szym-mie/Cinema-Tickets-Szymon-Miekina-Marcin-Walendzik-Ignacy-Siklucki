@@ -1,10 +1,10 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import UserModel from '../../model/UserModel.mjs';
 import MovieModel from '../../model/MovieModel.mjs';
 import RoomModel from '../../model/RoomModel.mjs';
 
 const IndexRoute = new Route(
-    'GET', '/', 'text/html',
+    'GET', '/', ReplyType.HTML,
     async (_req, res) => {
         // const users = await UserModel.use().findAll();
         // const usersJSON = JSON.stringify(users);

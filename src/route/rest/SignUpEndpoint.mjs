@@ -1,11 +1,11 @@
 import { ValidationError } from 'sequelize';
 import { Logging } from '../../Logging.mjs';
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import { Status } from '../../Status.mjs';
 import UserModel from '../../model/UserModel.mjs';
 
 const SignUpEndpoint = new Route(
-    'POST', '/signup', 'application/json',
+    'POST', '/signup', ReplyType.JSON,
     async (req, _res) => {
         const data = req.body;
 

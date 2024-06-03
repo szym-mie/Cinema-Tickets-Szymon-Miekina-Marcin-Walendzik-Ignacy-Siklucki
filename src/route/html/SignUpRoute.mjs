@@ -1,7 +1,7 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 
 const SignUpRoute = new Route(
-    'GET', '/signup', 'text/html',
+    'GET', '/signup', ReplyType.HTML,
     async (_req, res) => {
         return res.viewAsync('signup.hbs', {});
     },

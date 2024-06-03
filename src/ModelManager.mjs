@@ -85,11 +85,19 @@ class ModelManager {
     }
 
     /**
+     * Return all models.
+     * @returns Array of all models registered.
+     */
+    getAllModels() {
+        return [...this.modelMap.values()];
+    }
+
+    /**
      * Return all uninitialized models.
      * @returns Array of uninitialized models.
      */
     getUninitializedModels() {
-        return [...this.modelMap.values()].filter(def => !def.isInit());
+        return this.getAllModels().filter(def => !def.isInit());
     }
 
     /**
@@ -122,6 +130,12 @@ class ModelManager {
             this.sequelize.sync({ alter: true });
 
         return initializedModels;
+    }
+
+    async nukeData() {
+        await Promise.all(
+            this.getAllModels()
+                .map(model => model.init(this.sequelize, true, true)));
     }
 
     async newTransaction() {

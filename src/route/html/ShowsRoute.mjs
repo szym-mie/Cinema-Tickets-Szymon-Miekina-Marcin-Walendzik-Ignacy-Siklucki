@@ -1,36 +1,46 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
 import { Op } from 'sequelize';
 
 const ShowsRoute = new Route(
-    'GET', '/shows', 'text/html',
+    'GET', '/shows', ReplyType.HTML,
     async (_req, res) => {
         const today = new Date();
         const week = new Date(today);
         week.setDate(week.getDate() + 7);
 
-        const dates = await ShowModel.use().findAll({
+        const shows = await ShowModel.use().findAll({
             where: {
                 startTime: {
                     [Op.gte]: today,
                     [Op.lt]: week,
                 },
             },
+            order: ['startTime'],
+            include: ['movie', 'room'],
         });
 
-        const mappedDates = dates.map((show) => {
+        console.log(shows.map(show => show.get()));
+
+        const mappedShows = shows.map((show) => {
+            const showData = show.get();
+            const movieData = show.movie.get();
+            const roomData = show.room.get();
+
             return {
-                showId: show.id,
-                day: show.startTime.getDate(),
-                month: show.startTime.getMonth() + 1,
-                year: show.startTime.getFullYear(),
-                hour: show.startTime.getHours(),
-                minutes: show.startTime.getMinutes(),
+                id: showData.id,
+                movie: movieData,
+                room: roomData,
+                price: showData.price,
+                day: showData.startTime.getDate().toString().padStart(2, '0'),
+                month: (showData.startTime.getMonth() + 1).toString().padStart(2, '0'),
+                year: showData.startTime.getFullYear(),
+                hour: showData.startTime.getHours(),
+                minutes: showData.startTime.getMinutes().toString().padStart(2, '0'),
             };
         });
 
-        return res.viewAsync('shows.hbs', { shows: mappedDates });
-        // return res.viewAsync('shows.hbs');
+        return res.viewAsync('shows.hbs', { shows: mappedShows });
     },
 );
 

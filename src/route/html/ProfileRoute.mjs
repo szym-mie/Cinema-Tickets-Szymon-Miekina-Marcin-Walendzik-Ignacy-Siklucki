@@ -1,10 +1,10 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import { Session } from '../../Session.mjs';
 import TicketModel from '../../model/TicketModel.mjs';
 import UserModel from '../../model/UserModel.mjs';
 
 const ProfileRoute = new Route(
-    'GET', '/profile', 'text/html',
+    'GET', '/profile', ReplyType.HTML,
     async (req, res) => {
         const Ticket = TicketModel.use();
         const User = UserModel.use();
@@ -23,9 +23,9 @@ const ProfileRoute = new Route(
                 },
             });
 
-            console.log(tickets);
+            console.log(tickets.map(ticket => ticket.get()));
 
-            return res.viewAsync('profile.hbs', { helloName: user.login, tickets: tickets });
+            return res.viewAsync('profile.hbs', { helloName: user.login, tickets: tickets.map(ticket => ticket.get()) });
         }
         catch (e) {
             console.error(e);
