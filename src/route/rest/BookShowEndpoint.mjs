@@ -21,8 +21,7 @@ const BookShowEndpoint = new Route(
 
         try {
             const sessionToken = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromToken(sessionToken);
-
+            const session = Session.fromCookie(sessionToken);
             const user = await User.findOne(session.byRef());
 
             await req.modelManager.newTransaction()

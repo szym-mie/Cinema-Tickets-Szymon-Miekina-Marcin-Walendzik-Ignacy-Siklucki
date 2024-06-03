@@ -20,6 +20,7 @@ import handlebars from 'handlebars';
 
 import IndexRoute from './src/route/html/IndexRoute.mjs';
 import LoginRoute from './src/route/html/LoginRoute.mjs';
+import LogoutRoute from './src/route/html/LogoutRoute.mjs';
 import SignUpRoute from './src/route/html/SignUpRoute.mjs';
 import ProfileRoute from './src/route/html/ProfileRoute.mjs';
 import LogsRoute from './src/route/html/LogsRoute.mjs';
@@ -28,6 +29,7 @@ import ShowsRoute from './src/route/html/ShowsRoute.mjs';
 import ShowRoute from './src/route/html/ShowRoute.mjs';
 
 import LoginEndpoint from './src/route/rest/LoginEndpoint.mjs';
+import LogoutEndpoint from './src/route/rest/LogoutEndpoint.mjs';
 import SignUpEndpoint from './src/route/rest/SignUpEndpoint.mjs';
 import BookShowEndpoint from './src/route/rest/BookShowEndpoint.mjs';
 import DeleteUserEndpoint from './src/route/rest/DeleteUserEndpoint.mjs';
@@ -146,6 +148,8 @@ const addShows = async () => {
                     movieId: i,
                     roomId: j + 1,
                     startTime: new Date(2024, 5, 3 + (j * 2) + (i - 33), 12 + j, ((j % 2) * 30), 0),
+                    // date: new Date(),
+                    // time: ,
                     price: 18.99,
                 });
                 // console.log('Added lol', i)
@@ -204,6 +208,7 @@ routeManager.withContext({ modelManager });
 
 routeManager.addRoute(IndexRoute);
 routeManager.addRoute(LoginRoute);
+routeManager.addRoute(LogoutRoute);
 routeManager.addRoute(SignUpRoute);
 routeManager.addRoute(ProfileRoute);
 routeManager.addRoute(LogsRoute);
@@ -212,6 +217,7 @@ routeManager.addRoute(ShowsRoute);
 routeManager.addRoute(ShowRoute);
 
 routeManager.addRoute(LoginEndpoint);
+routeManager.addRoute(LogoutEndpoint);
 routeManager.addRoute(SignUpEndpoint);
 routeManager.addRoute(BookShowEndpoint);
 routeManager.addRoute(DeleteUserEndpoint);

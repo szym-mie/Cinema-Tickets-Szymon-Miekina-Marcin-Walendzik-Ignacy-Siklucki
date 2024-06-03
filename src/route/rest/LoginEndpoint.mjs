@@ -27,7 +27,8 @@ const LoginEndpoint = new Route(
             const session = Session.create();
             await user.update(session.getObject());
             res.setCookie(...session.getCookie(), {});
-            Logging.logInfo('User ' + data.login + ' login', 'User');
+
+            Logging.logInfo('User ' + user.login + ' login', 'User');
             return Status.ok();
         }
         catch (e) {

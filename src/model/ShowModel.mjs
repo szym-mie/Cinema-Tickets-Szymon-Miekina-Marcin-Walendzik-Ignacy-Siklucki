@@ -27,13 +27,23 @@ const ShowModel = new Model(
         //     allowNull: false,
         // },
         // // Start time of a movie
-        startTime: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
+        // startTime: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        // },
         // // Price per ticket
         price: {
             type: DataTypes.DECIMAL,
+            allowNull: false,
+        },
+        // Date only
+        date: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        // Time column (hours and minutes only)
+        time: {
+            type: DataTypes.TIME,
             allowNull: false,
         },
     },

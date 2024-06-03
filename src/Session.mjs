@@ -45,6 +45,13 @@ class Session {
     }
 
     /**
+     * Destroy secure token. Don't forget to update DB and client cookies.
+     */
+    destroy() {
+        this.token = '';
+    }
+
+    /**
      * Import session identity token to recreate session.
      * @param {string} token Imported token.
      * @returns {Session} Remote secure session.

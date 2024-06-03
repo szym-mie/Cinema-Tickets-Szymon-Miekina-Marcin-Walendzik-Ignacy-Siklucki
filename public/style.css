@@ -35,7 +35,7 @@ button:active {
 
 nav {
     display: grid;
-    grid-template-columns: 20% 65% 15%;
+    grid-template-columns: 1fr 4fr;
     position: sticky;
     top: 0;
     height: 70px;
@@ -71,7 +71,7 @@ nav {
 
 .nav-blocks {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     padding: 7px;
 }
 

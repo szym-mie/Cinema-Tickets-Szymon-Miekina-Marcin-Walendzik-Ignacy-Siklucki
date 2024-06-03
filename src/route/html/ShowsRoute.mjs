@@ -1,5 +1,6 @@
 import { Route } from '../../Route.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
+import MovieModel from '../../model/MovieModel.mjs';
 import { Op } from 'sequelize';
 
 const ShowsRoute = new Route(
@@ -9,7 +10,9 @@ const ShowsRoute = new Route(
         const week = new Date(today);
         week.setDate(week.getDate() + 7);
 
-        const dates = await ShowModel.use().findAll({
+        const showsDict = {};
+
+        const actualShows = await ShowModel.use().findAll({
             where: {
                 startTime: {
                     [Op.gte]: today,
@@ -18,19 +21,39 @@ const ShowsRoute = new Route(
             },
         });
 
-        const mappedDates = dates.map((show) => {
-            return {
+        actualShows.forEach(show => {
+            const movieId = show.movieId;
+
+            if (!showsDict.hasOwnProperty(movieId)) {
+                showsDict[movieId] = [];
+            }
+
+            showsDict[movieId].push({
                 showId: show.id,
-                day: show.startTime.getDate(),
-                month: show.startTime.getMonth() + 1,
-                year: show.startTime.getFullYear(),
-                hour: show.startTime.getHours(),
-                minutes: show.startTime.getMinutes(),
+                startTime: show.startTime,
+                roomId: show.roomId,
+                price: show.price
+            });
+        });
+
+        const movieIds = Object.keys(showsDict);
+
+        const movies = await MovieModel.use().findAll({
+            where: {
+                id: {
+                    [Op.in]: movieIds,
+                },
+            },
+        });
+
+        const showsArray = movies.map(movie => {
+            return {
+                movieId: movie.id,
+                title: movie.title
             };
         });
 
-        return res.viewAsync('shows.hbs', { shows: mappedDates });
-        // return res.viewAsync('shows.hbs');
+        return res.viewAsync('shows.hbs', {shows: showsArray});
     },
 );
 
