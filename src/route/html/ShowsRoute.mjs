@@ -1,16 +1,10 @@
 import { Route } from '../../Route.mjs';
-import MovieModel from '../../model/MovieModel.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
 import { Op } from 'sequelize';
 
-const MovieRoute = new Route(
-    'GET', '/movie/:id', 'text/html',
+const ShowsRoute = new Route(
+    'GET', '/shows', 'text/html',
     async (_req, res) => {
-        const id = _req.params.id;
-        console.log('ID FILMU' + id);
-        const movie = await MovieModel.use().findByPk(id);
-
-        // getting 7 days time shows
 
         const today = new Date();
         const week = new Date(today);
@@ -18,7 +12,6 @@ const MovieRoute = new Route(
 
         const dates = await ShowModel.use().findAll({
             where: {
-                movieId: id,
                 startTime: {
                     [Op.gte]: today, 
                     [Op.lt]: week,
@@ -37,9 +30,9 @@ const MovieRoute = new Route(
             };
         });
 
-        // return res.viewAsync('movie.hbs', { movie: movieJSON });
-        return res.viewAsync('movie.hbs', { movie: movie.get(), dates: mappedDates });
+        return res.viewAsync('shows.hbs', { shows: mappedDates });
+        // return res.viewAsync('shows.hbs');
     },
 );
 
-export default MovieRoute;
+export default ShowsRoute;

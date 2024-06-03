@@ -22,6 +22,8 @@ import SignUpRoute from './src/route/html/SignUpRoute.mjs';
 import ProfileRoute from './src/route/html/ProfileRoute.mjs';
 import LogsRoute from './src/route/html/LogsRoute.mjs';
 import MovieRoute from './src/route/html/MovieRoute.mjs';
+import ShowsRoute from './src/route/html/ShowsRoute.mjs';
+import ShowRoute from './src/route/html/ShowRoute.mjs';
 
 import LoginEndpoint from './src/route/rest/LoginEndpoint.mjs';
 import SignUpEndpoint from './src/route/rest/SignUpEndpoint.mjs';
@@ -203,6 +205,8 @@ routeManager.addRoute(SignUpRoute);
 routeManager.addRoute(ProfileRoute);
 routeManager.addRoute(LogsRoute);
 routeManager.addRoute(MovieRoute);
+routeManager.addRoute(ShowsRoute);
+routeManager.addRoute(ShowRoute);
 
 routeManager.addRoute(LoginEndpoint);
 routeManager.addRoute(SignUpEndpoint);

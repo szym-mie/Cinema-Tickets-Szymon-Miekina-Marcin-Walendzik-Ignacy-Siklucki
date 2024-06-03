@@ -6,7 +6,19 @@
 <body>
     {{>navbar}}
     <main>
-
+        {{#if shows}}
+            {{#each shows}}
+                <div a="/show/{{this.showId}}">    
+                    {{this.day}}
+                    {{this.month}}
+                    {{this.year}}
+                    {{this.hour}}
+                    {{this.minutes}}
+                </div>
+            {{/each}}
+        {{else}}
+            Brak seansów
+        {{/if}}
     </main>
     {{>footer}}
 </body>

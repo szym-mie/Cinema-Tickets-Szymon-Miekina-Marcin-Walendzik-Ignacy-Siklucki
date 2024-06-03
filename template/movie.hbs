@@ -15,10 +15,13 @@
 
         {{#if dates}}
             {{#each dates}}
-                {{this.day}}
-                {{this.month}}
-                {{this.year}}
-                {{this.hour}}
+                <div a="/show/{{this.showId}}">    
+                    {{this.day}}
+                    {{this.month}}
+                    {{this.year}}
+                    {{this.hour}}
+                    {{this.minutes}}
+                </div>
             {{/each}}
         {{else}}
             Brak seansów
