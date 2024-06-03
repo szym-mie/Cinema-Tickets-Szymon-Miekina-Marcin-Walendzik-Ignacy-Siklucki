@@ -132,38 +132,26 @@ const addRooms = async () => {
     }
 };
 
+
 const addShows = async () => {
     try {
-        await RoomModel.use().create({
-            number: 1,
-            seats: 60,
-        });
-        await RoomModel.use().create({
-            number: 2,
-            seats: 60,
-        });
-        await RoomModel.use().create({
-            number: 3,
-            seats: 60,
-        });
-        await RoomModel.use().create({
-            number: 4,
-            seats: 50,
-        });
-        await RoomModel.use().create({
-            number: 5,
-            seats: 50,
-        });
-        await RoomModel.use().create({
-            number: 6,
-            seats: 50,
-        });
-        console.log('Added rooms');
+        for (let i = 33; i < 37; i++ ) { 
+            for (let j = 0; j < 4; j++) {
+                await ShowModel.use().create({
+                    movieId: i,
+                    roomId: j+1,
+                    startTime: new Date(2024, 5, 3 + (j * 2) + (i - 33), 12 + j, ((j % 2) * 30), 0),
+                    price: 18.99,
+                })
+                // console.log('Added lol', i)
+            }
+        }
+        console.log('Added shows');
     }
     catch (error) {
-        console.error('Cannot add rooms: ', error);
+        console.error('Cannot add shows: ', error);
     }
-};
+}
 
 // DB connecting
 
@@ -171,7 +159,7 @@ try {
     await modelManager.connect();
     await modelManager.init(true);
 
-    // await addRooms();
+    // await addShows();
     console.log('connected to database.');
 }
 catch (e) {

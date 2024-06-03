@@ -5,37 +5,37 @@ const ShowModel = new Model(
     'Show',
     {
         // Primary key
-        // id: {
-        //     type: DataTypes.BIGINT,
-        //     allowNull: false,
-        //     autoIncrement: true,
-        //     primaryKey: true,
-        // },
+        id: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+        },
         // // ID of shown movie
-        // movieId: {
-        //     type: DataTypes.BIGINT,
-        //     allowNull: false,
-        // },
+        movieId: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+        },
         // // ID of used room
-        // roomId: {
-        //     type: DataTypes.SMALLINT,
-        //     allowNull: false,
-        // },
+        roomId: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+        },
         // // Day of the movie
         // startDate: {
         //     type: DataTypes.DATEONLY,
         //     allowNull: false,
         // },
         // // Start time of a movie
-        // startTime: {
-        //     type: DataTypes.DATE,
-        //     allowNull: false,
-        // },
+        startTime: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
         // // Price per ticket
-        // price: {
-        //     type: DataTypes.DECIMAL,
-        //     allowNull: false,
-        // },
+        price: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+        },
     },
 );
 

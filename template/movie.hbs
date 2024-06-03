@@ -12,6 +12,18 @@
         <p>{{movie.year}}</p>
         <p>{{movie.runtime}}</p>
         <img src="../public/movies/{{movie.id}}.jpg" alt="{{movie.id}}"/>
+
+        {{#if dates}}
+            {{#each dates}}
+                {{this.day}}
+                {{this.month}}
+                {{this.year}}
+                {{this.hour}}
+            {{/each}}
+        {{else}}
+            Brak seansów
+        {{/if}}
+
     </main>
     {{>footer}}
 </body>
