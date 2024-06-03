@@ -2,6 +2,7 @@ import { ModelManager } from './src/ModelManager.mjs';
 
 import LogModel from './src/model/LogModel.mjs';
 import MovieModel from './src/model/MovieModel.mjs';
+import PaymentModel from './src/model/PaymentModel.mjs';
 import RoomModel from './src/model/RoomModel.mjs';
 import ShowModel from './src/model/ShowModel.mjs';
 import TicketModel from './src/model/TicketModel.mjs';
@@ -9,6 +10,7 @@ import UserModel from './src/model/UserModel.mjs';
 
 import TicketUserAssoc from './src/assoc/TicketUserAssoc.mjs';
 import TicketShowAssoc from './src/assoc/TicketShowAssoc.mjs';
+import TicketPaymentAssoc from './src/assoc/TicketPaymentAssoc.mjs';
 import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
 import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
 
@@ -27,7 +29,7 @@ import ShowRoute from './src/route/html/ShowRoute.mjs';
 
 import LoginEndpoint from './src/route/rest/LoginEndpoint.mjs';
 import SignUpEndpoint from './src/route/rest/SignUpEndpoint.mjs';
-import BookEndpoint from './src/route/rest/BookEndpoint.mjs';
+import BookShowEndpoint from './src/route/rest/BookShowEndpoint.mjs';
 import DeleteUserEndpoint from './src/route/rest/DeleteUserEndpoint.mjs';
 
 // Database
@@ -41,11 +43,13 @@ const modelManager = new ModelManager({
 
 modelManager.addAssoc(TicketShowAssoc);
 modelManager.addAssoc(TicketUserAssoc);
+modelManager.addAssoc(TicketPaymentAssoc);
 modelManager.addAssoc(ShowMovieAssoc);
 modelManager.addAssoc(ShowRoomAssoc);
 
 modelManager.addModel(LogModel);
 modelManager.addModel(MovieModel);
+modelManager.addModel(PaymentModel);
 modelManager.addModel(RoomModel);
 modelManager.addModel(ShowModel);
 modelManager.addModel(TicketModel);
@@ -57,12 +61,12 @@ const deleteMovies = async () => {
     for (let i = 1; i < 33; i++) {
         const deleted = await MovieModel.use().destroy({
             where: {
-                id: i
-            }
+                id: i,
+            },
         });
         console.log('lol');
     }
-}
+};
 
 const addMovies = async () => {
     try {
@@ -134,17 +138,16 @@ const addRooms = async () => {
     }
 };
 
-
 const addShows = async () => {
     try {
-        for (let i = 33; i < 37; i++ ) { 
+        for (let i = 33; i < 37; i++) {
             for (let j = 0; j < 4; j++) {
                 await ShowModel.use().create({
                     movieId: i,
-                    roomId: j+1,
+                    roomId: j + 1,
                     startTime: new Date(2024, 5, 3 + (j * 2) + (i - 33), 12 + j, ((j % 2) * 30), 0),
                     price: 18.99,
-                })
+                });
                 // console.log('Added lol', i)
             }
         }
@@ -153,7 +156,7 @@ const addShows = async () => {
     catch (error) {
         console.error('Cannot add shows: ', error);
     }
-}
+};
 
 // DB connecting
 
@@ -210,7 +213,7 @@ routeManager.addRoute(ShowRoute);
 
 routeManager.addRoute(LoginEndpoint);
 routeManager.addRoute(SignUpEndpoint);
-routeManager.addRoute(BookEndpoint);
+routeManager.addRoute(BookShowEndpoint);
 routeManager.addRoute(DeleteUserEndpoint);
 
 await routeManager.startServer();

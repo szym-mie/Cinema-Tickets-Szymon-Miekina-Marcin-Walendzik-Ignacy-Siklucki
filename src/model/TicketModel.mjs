@@ -29,6 +29,11 @@ const TicketModel = new Model(
             type: DataTypes.BIGINT,
             allowNull: false,
         },
+        // ID of the payment
+        paymentId: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+        },
         // Seat number being booked
         seatNumber: {
             type: DataTypes.SMALLINT,

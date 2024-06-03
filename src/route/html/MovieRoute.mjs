@@ -20,13 +20,13 @@ const MovieRoute = new Route(
             where: {
                 movieId: id,
                 startTime: {
-                    [Op.gte]: today, 
+                    [Op.gte]: today,
                     [Op.lt]: week,
-                }
+                },
             },
         });
 
-        const mappedDates = dates.map(show => {
+        const mappedDates = dates.map((show) => {
             return {
                 showId: show.id,
                 day: show.startTime.getDate(),

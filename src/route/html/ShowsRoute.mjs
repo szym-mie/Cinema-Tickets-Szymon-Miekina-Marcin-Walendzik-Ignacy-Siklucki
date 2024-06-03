@@ -5,7 +5,6 @@ import { Op } from 'sequelize';
 const ShowsRoute = new Route(
     'GET', '/shows', 'text/html',
     async (_req, res) => {
-
         const today = new Date();
         const week = new Date(today);
         week.setDate(week.getDate() + 7);
@@ -13,13 +12,13 @@ const ShowsRoute = new Route(
         const dates = await ShowModel.use().findAll({
             where: {
                 startTime: {
-                    [Op.gte]: today, 
+                    [Op.gte]: today,
                     [Op.lt]: week,
-                }
+                },
             },
         });
 
-        const mappedDates = dates.map(show => {
+        const mappedDates = dates.map((show) => {
             return {
                 showId: show.id,
                 day: show.startTime.getDate(),

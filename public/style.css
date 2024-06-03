@@ -3,6 +3,10 @@ body {
     margin: 0;
 }
 
+main {
+    padding: 2em;
+}
+
 * {
     color: #dcdcdc;
     font-family: sans-serif;
@@ -90,7 +94,7 @@ nav {
     font-weight: 400;
     font-style: normal;
     border-radius: 8px;
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     height: 35px;
     width: 60%;
     margin: auto;
