@@ -31,6 +31,16 @@ const ShowModel = new Model(
             type: DataTypes.DECIMAL,
             allowNull: false,
         },
+        // Date only
+        date: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        // Time column (hours and minutes only)
+        time: {
+            type: DataTypes.TIME,
+            allowNull: false,
+        },
     },
 );
 
