@@ -1,6 +1,6 @@
 import { ReplyType, Route } from '../../Route.mjs';
 import UserModel from '../../model/UserModel.mjs';
-import { Op } from 'sequelize';
+import { Op, ValidationError } from 'sequelize';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
 import { Logging } from '../../Logging.mjs';
@@ -21,6 +21,11 @@ const LoginEndpoint = new Route(
                 },
             });
 
+            if (user === null) {
+                Logging.logInfo('User ' + data.login + ' failed to log in - no such user', 'User');
+                return Status.error(new Error('No such user'));
+            }
+
             const userData = user.get();
             console.log(userData);
 
@@ -33,10 +38,7 @@ const LoginEndpoint = new Route(
         }
         catch (e) {
             console.error(e);
-            if (e instanceof ValidationError)
-                Logging.logInfo('User ' + data.login + ' failed to log in - ' + e.message, 'User');
-            else
-                Logging.logError('Login failed - ' + e.message, 'User');
+            Logging.logError('Login failed - ' + e.message, 'User');
             return Status.error(e);
         }
     },

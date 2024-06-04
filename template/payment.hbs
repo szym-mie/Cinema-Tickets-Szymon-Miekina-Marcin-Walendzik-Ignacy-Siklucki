@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+    <script>
+        const result = document.getElementById('refuse');
+
+        const finish = (token) => {
+            console.log('pay for ' + token);
+            const data = { paymentToken: token };
+            fetch('/finish_payment', { 
+                method: 'POST', 
+                credentials: 'include', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data) 
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json.status === 'ok')
+                    window.location.href = '/profile';
+                else
+                    result.innerText = json.reason;
+            })
+        }
+
+        const unbook = (token) => {
+            console.log('refuse ' + token);
+            const data = { paymentToken: token };
+            fetch('/unbook_show', { 
+                method: 'POST', 
+                credentials: 'include', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data) 
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json.status === 'ok')
+                    window.location.href = '/profile';
+                else
+                    result.innerText = json.reason;
+            })
+        }
+    </script>
+</head>
+<body>
+    {{>navbar}}
+    <main>
+        <h1>Payment</h1>
+        <h2>{{title}}</h2>
+        <h3>Price: {{price}}</h3>
+        {{#if isNotPaid}}
+        <button onclick="finish('{{token}}')">Pay</button>
+        {{/if}}
+        <button onclick="unbook('{{token}}')">Unbook</button>
+        <p id="result"> </p>
+        <div>
+        {{#if tickets}}
+            {{#each tickets}}
+                <div class="show">
+                    <p>seat: {{this.seatNumber}}</p>
+                </div>
+            {{/each}}
+        {{else}}
+            <h4>No tickets.</h4>
+        {{/if}}
+        </div>
+    </main>
+    {{>footer}}
+</body>
+</html>

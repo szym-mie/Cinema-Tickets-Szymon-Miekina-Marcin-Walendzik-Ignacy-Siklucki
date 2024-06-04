@@ -15,6 +15,7 @@ const UserModel = new Model(
         login: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 is: /[0-9a-zA-Z_]{4,64}/,
             },
