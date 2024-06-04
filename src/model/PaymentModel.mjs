@@ -21,6 +21,11 @@ const PaymentModel = new Model(
             type: DataTypes.BIGINT,
             allowNull: false,
         },
+        // Show ID
+        showId: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+        },
         // Payment token
         token: {
             type: DataTypes.STRING,

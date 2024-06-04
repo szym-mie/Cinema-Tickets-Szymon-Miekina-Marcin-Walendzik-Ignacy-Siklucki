@@ -26,17 +26,19 @@ import ProfileRoute from './src/route/html/ProfileRoute.mjs';
 import LogsRoute from './src/route/html/LogsRoute.mjs';
 import MovieRoute from './src/route/html/MovieRoute.mjs';
 import ShowsRoute from './src/route/html/ShowsRoute.mjs';
-import ShowRoute from './src/route/html/ShowRoute.mjs';
+import BookShowRoute from './src/route/html/BookShowRoute.mjs';
+import RebookShowRoute from './src/route/html/RebookShowRoute.mjs';
 import PaymentRoute from './src/route/html/PaymentRoute.mjs';
 
 import LoginEndpoint from './src/route/rest/LoginEndpoint.mjs';
 import LogoutEndpoint from './src/route/rest/LogoutEndpoint.mjs';
 import SignUpEndpoint from './src/route/rest/SignUpEndpoint.mjs';
 import BookShowEndpoint from './src/route/rest/BookShowEndpoint.mjs';
+import UnbookShowEndpoint from './src/route/rest/UnbookShowEndpoint.mjs';
+import RebookShowEndpoint from './src/route/rest/RebookShowEndpoint.mjs';
 import DeleteUserEndpoint from './src/route/rest/DeleteUserEndpoint.mjs';
 import DeleteTicketEndpoint from './src/route/rest/DeleteTicketEndpoint.mjs';
 import FinishPaymentEndpoint from './src/route/rest/FinishPaymentEndpoint.mjs';
-import UnbookShowEndpoint from './src/route/rest/UnbookShowEndpoint.mjs';
 
 import { DemoDataLoader, demoData } from './src/DemoData.mjs';
 
@@ -66,7 +68,7 @@ modelManager.addModel(UserModel);
 // DB connecting
 try {
     await modelManager.connect();
-    // await modelManager.nukeData();
+    await modelManager.nukeData();
     await modelManager.init(true);
 
     // await addShows();
@@ -120,15 +122,17 @@ routeManager.addRoute(PaymentRoute);
 routeManager.addRoute(LogsRoute);
 routeManager.addRoute(MovieRoute);
 routeManager.addRoute(ShowsRoute);
-routeManager.addRoute(ShowRoute);
+routeManager.addRoute(BookShowRoute);
+routeManager.addRoute(RebookShowRoute);
 
 routeManager.addRoute(LoginEndpoint);
 routeManager.addRoute(LogoutEndpoint);
 routeManager.addRoute(SignUpEndpoint);
 routeManager.addRoute(BookShowEndpoint);
+routeManager.addRoute(UnbookShowEndpoint);
+routeManager.addRoute(RebookShowEndpoint);
 routeManager.addRoute(DeleteUserEndpoint);
 routeManager.addRoute(DeleteTicketEndpoint);
 routeManager.addRoute(FinishPaymentEndpoint);
-routeManager.addRoute(UnbookShowEndpoint);
 
 await routeManager.startServer();

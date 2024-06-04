@@ -51,6 +51,7 @@
         <h2>{{title}}</h2>
         <h3>Price: {{price}}</h3>
         {{#if isNotPaid}}
+        <a href="/rebook_show/{{token}}">Change seats</a>
         <button onclick="finish('{{token}}')">Pay</button>
         {{/if}}
         <button onclick="unbook('{{token}}')">Unbook</button>

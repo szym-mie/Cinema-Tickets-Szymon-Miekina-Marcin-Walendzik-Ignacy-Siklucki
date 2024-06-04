@@ -1,11 +1,9 @@
-import { Route } from '../../Route.mjs';
+import { ReplyType, Route } from '../../Route.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
-import RoomModel from '../../model/RoomModel.mjs';
 import TicketModel from '../../model/TicketModel.mjs';
-import { Op } from 'sequelize';
 
-const ShowRoute = new Route(
-    'GET', '/show/:id', 'text/html',
+const BookShowRoute = new Route(
+    'GET', '/book_show/:id', ReplyType.HTML,
     async (req, res) => {
         const id = req.params.id;
         const show = await ShowModel.use().findByPk(id, { include: ['room'] });
@@ -27,8 +25,8 @@ const ShowRoute = new Route(
             });
         }
 
-        return res.viewAsync('show.hbs', { show: show.get(), room: room.get(), seats: seats });
+        return res.viewAsync('book_show.hbs', { show: show.get(), room: room.get(), seats: seats });
     },
 );
 
-export default ShowRoute;
+export default BookShowRoute;

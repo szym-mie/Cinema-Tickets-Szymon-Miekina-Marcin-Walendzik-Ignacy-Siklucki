@@ -6,20 +6,18 @@ import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
 import { Logging } from '../../Logging.mjs';
 import PaymentModel from '../../model/PaymentModel.mjs';
-import ShowModel from '../../model/ShowModel.mjs';
-import { TimeFormat } from '../../TimeFormat.mjs';
 
-const BookShowEndpoint = new Route(
-    'POST', '/book_show', ReplyType.JSON,
+const RebookShowEndpoint = new Route(
+    'POST', '/rebook_show', ReplyType.JSON,
     async (req, _res) => {
         const data = req.body;
 
         const showId = data.showId;
+        const paymentToken = data.paymentToken;
         const seatNumbers = data.seatNumbers;
 
         if (seatNumbers.length === 0) return Status.ok();
 
-        const Show = ShowModel.use();
         const Payment = PaymentModel.use();
         const Ticket = TicketModel.use();
         const User = UserModel.use();
@@ -31,27 +29,22 @@ const BookShowEndpoint = new Route(
             const session = Session.fromCookie(sessionToken);
             const user = await User.findOne(session.byRef());
 
-            const show = await Show.findOne({
+            const payment = await Payment.findOne({
                 where: {
-                    id: showId,
+                    token: paymentToken,
+                    userId: user.id,
                 },
-                include: ['movie', 'room'],
+                include: ['tickets'],
             });
 
-            const time = new TimeFormat(show.startTime);
-
-            const title = show.movie.title + ' ' + time.toTimeString();
+            if (payment === null || payment.tickets.length === 0 || payment.isPaid)
+                return Status.error(new Error('No such payment'));
 
             const transaction = await req.modelManager.newTransaction();
             await transaction.of(async (t) => {
-                const paymentToken = Security.createSecureToken(12);
-                const payment = await Payment.create(t.wrap({
-                    title: title,
-                    token: paymentToken,
-                    userId: user.id,
-                    showId: showId,
-                }));
-
+                for (const ticket of payment.tickets) {
+                    await ticket.destroy();
+                }
                 for (const seatNumber of seatNumbers) {
                     const ticketToken = Security.createSecureToken(48);
                     await Ticket.create(t.wrap({
@@ -61,7 +54,7 @@ const BookShowEndpoint = new Route(
                         paymentId: payment.id,
                         seatNumber: seatNumber,
                     }));
-                    Logging.logInfo('Ticket for #' + data.showId + ', seat ' + seatNumber + ' was booked', 'Ticket');
+                    Logging.logInfo('Ticket for #' + showId + ', seat ' + seatNumber + ' was rebooked', 'Ticket');
                 }
             });
 
@@ -69,10 +62,10 @@ const BookShowEndpoint = new Route(
         }
         catch (e) {
             console.error(e);
-            Logging.logError('Book ticket failed - ' + e.message, 'Ticket');
+            Logging.logError('Rebook ticket failed - ' + e.message, 'Ticket');
             return Status.error(e);
         }
     },
 );
 
-export default BookShowEndpoint;
+export default RebookShowEndpoint;

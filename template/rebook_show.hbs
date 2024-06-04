@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>header}}
+</head>
+<body>
+    {{>navbar}}
+    <main>
+        <p>Nr sali: {{room.number}}
+        Ilość miejsc: {{room.seats}}</p>
+
+        <div class="seats-container">
+                {{#each seats}}
+                    <div class="seat">
+                        {{#if this.isBooked}}
+                            <div class="booked">{{this.number}}</div>
+                        {{else}}
+                            {{#if this.isTaken}}
+                                <div class="taken" onclick="toggleSeat(this)">{{this.number}}</div>
+                            {{else}}
+                                <div class="not-booked" onclick="toggleSeat(this)">{{this.number}}</div>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                {{/each}}
+        </div>
+        <button onclick="rebookShow({{payment.showId}}, '{{payment.token}}')" type="button">Book now!</button><br>
+        <p id="showId" style="display: none;">{{show.id}}</p>
+    </main>
+    {{>footer}}
+    <script>
+        function toggleSeat(element) {
+            if (element.classList.contains('not-booked')) {
+                element.classList.remove('not-booked');
+                element.classList.add('taken');
+            } else if (element.classList.contains('taken')) {
+                element.classList.remove('taken');
+                element.classList.add('not-booked');
+            }
+        }
+
+        function rebookShow(showId, paymentToken) {
+            const data = {
+                showId: showId,
+                paymentToken: paymentToken,
+                seatNumbers: [...document.querySelectorAll('.taken').values()].map(e => parseInt(e.innerText)),
+            };
+
+            console.log(data);
+
+            fetch('/rebook_show', { 
+                method: 'POST', 
+                credentials: 'include', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data) 
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                if (json.status === 'ok')
+                    window.location.href = '/profile';
+                else
+                    window.location.href = '/login';
+            })
+        }
+    </script>
+
+</body>
+</html>
