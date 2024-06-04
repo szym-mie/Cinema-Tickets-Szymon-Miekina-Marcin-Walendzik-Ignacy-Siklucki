@@ -44,8 +44,15 @@ ORM: Sequelize
     * [User](#user)
     * [Log](#log)
 * [Relacje](#relacje)
-
-
+* [Operacje](#operacje)
+    * [Login](#login)
+    * [SignUp](#signup)
+    * [Logout](#logout)
+    * [BookShow](#bookshow)
+    * [RebookShow](#rebookshow)
+    * [RefusePayment/UnbookShow](#refusepayment)
+    * [FinishPayment](#finishpayment)
+* [Technologie](#technologie)
 ## Schemat
 
 ![schema](schema/main.png)
@@ -139,3 +146,78 @@ Logi (dziennik)
 |Payment|1:n|Ticket|paymentId|
 |Show|1:n|Ticket|showId|
 |User|1:n|Ticket|userId|
+
+## Operacje
+
+Każda operacja oprócz właściwej modyfikacji danych, przesyła również informacje do tabeli *Logs* o statusie wykonania.
+
+### SignUp
+
+Zarejestruj użytkownika w bazie danych - utwórz konto, z unikalnym loginem, emailem i hasłem.
+Ustawiona jest walidacja na długość loginu (> 4 litery alfabetu łacińskiego w tym cyfry i wybrane znaki specjalne), walidacja adresu email.
+
+#### CRUD:
+1. create User
+
+### Login
+
+Zaloguj użytkownika, wydajac przy tym token sesji.
+
+#### CRUD:
+1. find (select) User by login, password
+2. update User.currentSession = new_token
+
+### Logout
+
+Wyloguj użytkownika usuwając token sesji.
+
+#### CRUD:
+1. udpate User.currentSession = NULL
+
+### BookShow
+
+Zarezerwuj miejsca na sali kinowej na dany seans. Kupujący otrzymuje Payment, który może zapłacić, lub odmówić (rezygnacja z rezerwacji).
+
+#### CRUD:
+1. create Payment
+2. create Ticket for each seat taken
+3. commit transaction
+
+### RebookShow
+
+Jeżeli klient nie dokonał płatności, może zmienić zarezerwowane fotele.
+
+#### CRUD:
+1. delete previous Tickets of selected payment
+2. create Ticket for each seat taken
+3. commit transaction
+
+
+
+### RefusePayment/UnbookShow
+
+Klient odmawia płatności, rezygnując z rezerwacji.
+
+#### CRUD:
+1. delete Tickets of selected payment
+2. delete Payment
+3. commit transaction
+
+### FinishPayment
+
+Klient zapłaca za zarezerwowane miejsca, otrzymując dostęp do biletów.
+
+#### CRUD:
+1. update Payment.isPaid = true
+
+## Technologia
+
+### Sequelize
+
+Jest to ORM do aplikacji w Javascripcie na platformie Node.js. Obsługiwane jest wiele systemów bazodanych w tym Postgres, który został użyty w tym projekcie. 
+
+Sama bibliotek bardzo ułatwia wykonywanie operacji na bazie danych, pozwalając na tworzenie relacji 1:1, 1:N i N:N, transakcji, walidacji danych i ich automatyczne przetwarzanie.
+
+Korzystanie z tej technologi może wydawać się intuicyjne, głównie z powodu na nature samego języka Javascript jak i wielu "trików", które dodaje sam Sequelize w celu ułatwienia niektórych operacji, pod warunkiem, że zrozumie się ich działanie - mianowicie wiele pól do obiektów z rezultatami jest dodawane dynamicznie, i zależy od opcji podanych do metody.
+
+Należy też pamiętać o tym, że Sequelize może połączyć się tylko z istniejącą tabelą, co uniemożliwia tworzenie nowych tabel, modyfikowanie isniejących etc.
