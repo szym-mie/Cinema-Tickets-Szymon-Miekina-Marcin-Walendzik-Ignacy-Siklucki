@@ -66,7 +66,7 @@ modelManager.addModel(UserModel);
 // DB connecting
 try {
     await modelManager.connect();
-    await modelManager.nukeData();
+    // await modelManager.nukeData();
     await modelManager.init(true);
 
     // await addShows();
