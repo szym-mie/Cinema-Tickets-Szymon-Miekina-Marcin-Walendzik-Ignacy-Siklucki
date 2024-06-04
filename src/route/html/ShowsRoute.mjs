@@ -1,6 +1,5 @@
 import { ReplyType, Route } from '../../Route.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
-import MovieModel from '../../model/MovieModel.mjs';
 import { Op } from 'sequelize';
 
 const ShowsRoute = new Route(

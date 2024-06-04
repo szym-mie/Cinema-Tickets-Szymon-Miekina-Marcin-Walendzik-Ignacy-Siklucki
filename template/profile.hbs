@@ -7,11 +7,43 @@
     {{>navbar}}
     <main>
         <h1>Hello {{helloName}}!</h1>
-        {{#each tickets}}
-            <div>
-                <p>token: {{this.token}}</p>
-            </div>
-        {{/each}}
+        <h3>Paid tickets</h3>
+        {{#if tickets}}
+            {{#each tickets}}
+                <div class="show">
+                    <p>token: {{this.token}}</p>
+                    <p>seat: {{this.seatNumber}}</p>
+                </div>
+            {{/each}}
+        {{else}}
+            <h4>No tickets.</h4>
+        {{/if}}
+        <h3>Unpaid Payments</h3>
+        {{#if unpaidPayments}}
+            {{#each unpaidPayments}}
+                <div class="show">
+                    <a href="/payment/{{this.token}}">
+                        <h3>{{this.title}}</h3>
+                        <p>Not paid.</p>
+                    </a>
+                </div>
+            {{/each}}
+        {{else}}
+            <h4>No unpaid payments.</h4>
+        {{/if}}
+        <h3>Paid Payments</h3>
+        {{#if paidPayments}}
+            {{#each paidPayments}}
+                <div class="show">
+                    <a href="/payment/{{this.token}}">
+                        <h3>{{this.title}}</h3>
+                        <p>Paid.</p>
+                    </a>
+                </div>
+            {{/each}}
+        {{else}}
+            <h4>No payments.</h4>
+        {{/if}}
     </main>
     {{>footer}}
 </body>

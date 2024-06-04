@@ -2,6 +2,7 @@ import { Logging } from '../../Logging.mjs';
 import { ReplyType, Route } from '../../Route.mjs';
 import UserModel from '../../model/UserModel.mjs';
 import { Session } from '../../Session.mjs';
+import { Status } from '../../Status.mjs';
 import PaymentModel from '../../model/PaymentModel.mjs';
 
 const FinishPaymentEndpoint = new Route(
@@ -19,19 +20,15 @@ const FinishPaymentEndpoint = new Route(
             const user = await User.findOne(session.byRef());
             const userId = user.id;
 
-            const payment = await Payment.findOne({
+            await Payment.update({
+                isPaid: true,
+            }, {
                 where: {
                     token: paymentToken,
                     userId: userId,
                 },
             });
 
-            if (payment === null) {
-                Logging.logInfo('Payment finish attempt - no such payment', 'Payment');
-                return Status.ok();
-            }
-
-            payment.update('isPaid', true);
             Logging.logInfo('Payment ' + paymentToken + ' has been paid for', 'Payment');
 
             return Status.ok();

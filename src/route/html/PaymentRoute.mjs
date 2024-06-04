@@ -4,10 +4,10 @@ import PaymentModel from '../../model/PaymentModel.mjs';
 import TicketModel from '../../model/TicketModel.mjs';
 import UserModel from '../../model/UserModel.mjs';
 
-const ProfileRoute = new Route(
-    'GET', '/profile', ReplyType.HTML,
+const PaymentRoute = new Route(
+    'GET', '/payment/:token', ReplyType.HTML,
     async (req, res) => {
-        const Payments = PaymentModel.use();
+        const Payment = PaymentModel.use();
         const Ticket = TicketModel.use();
         const User = UserModel.use();
 
@@ -17,36 +17,42 @@ const ProfileRoute = new Route(
             console.log('session ' + session.token);
 
             const user = await User.findOne(session.byRef());
-            const userId = user.id;
 
-            const payments = await Payments.findAll({
+            const payment = await Payment.findOne({
                 where: {
-                    userId: userId,
+                    userId: user.id,
+                    token: req.params.token,
                 },
             });
 
             const tickets = await Ticket.findAll({
                 where: {
-                    userId: userId,
+                    paymentId: payment.id,
                 },
-                include: ['payment'],
+                include: ['show'],
             });
 
-            const paymentData = payments.map(payment => payment.get());
+            console.log(tickets);
 
-            return res.viewAsync('profile.hbs', {
-                helloName: user.login,
-                unpaidPayments: paymentData.filter(pay => !pay.isPaid),
-                paidPayments: paymentData.filter(pay => pay.isPaid),
-                tickets: tickets.filter(ticket => ticket.payment.isPaid).map(ticket => ticket.get()),
+            const price = tickets
+                .map(ticket => ticket.show.price)
+                .reduce((a, c) => a + parseFloat(c), 0);
+
+            return res.viewAsync('payment.hbs', {
+                title: payment.title,
+                token: payment.token,
+                tickets: tickets.map(ticket => ticket.get()),
+                isNotPaid: !payment.isPaid,
+                price: price,
             });
         }
         catch (e) {
             console.error(e);
-            res.redirect('/login');
-            return '';
+            return res.viewAsync('error.hbs', {
+                reason: e,
+            });
         }
     },
 );
 
-export default ProfileRoute;
+export default PaymentRoute;

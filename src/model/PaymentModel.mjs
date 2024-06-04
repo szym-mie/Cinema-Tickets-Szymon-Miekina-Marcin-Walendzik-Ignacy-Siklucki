@@ -11,6 +11,11 @@ const PaymentModel = new Model(
             autoIncrement: true,
             primaryKey: true,
         },
+        // Title of this payment
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         // User ID
         userId: {
             type: DataTypes.BIGINT,
