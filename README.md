@@ -58,7 +58,7 @@ ORM: Sequelize
 * [Technologie](#technologie)
 ## Schemat
 
-![schema](schema/main.png)
+![schema](schema/main.jpg)
 
 ## Tabele
 
