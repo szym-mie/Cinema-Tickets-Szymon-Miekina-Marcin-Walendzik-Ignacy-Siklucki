@@ -1,4 +1,5 @@
 import { ReplyType, Route } from '../../Route.mjs';
+
 import LogModel from '../../model/LogModel.mjs';
 
 const LogsRoute = new Route(

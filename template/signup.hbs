@@ -6,21 +6,25 @@
 <body>
     {{>navbar}}
     <main>
-        <h1>Sign Up</h1>
-        <form id="form">
-            <label for="login"><b>Login</b></label>
-            <input type="text" placeholder="Enter login" name="login" required><br>
+        <div class="log-in-container">
+        <div class="log-in">
+            <h1>Sign Up</h1>
+            <form id="form">
+                <label for="login"><b style="color: black; margin-right: 30px;">Login</b></label>
+                <input type="text" placeholder="Enter login" name="login" required><br>
 
-            <label for="email"><b>Email</b></label>
-            <input type="email" placeholder="Enter email" name="email" required><br>
+                <label for="email"><b style="color: black; margin-right: 32px;">Email</b></label>
+                <input type="email" placeholder="Enter email" name="email" required><br>
 
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" required><br>
+                <label for="password"><b style="color: black;">Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required><br>
 
-            <button id="submit" type="button">Sign Up</button><br>
+                <button id="submit" type="button">Sign Up</button><br>
 
-            <p id="result"></p>
-        </form>
+                <p id="result"></p>
+            </form>
+        </div>
+        </div>
         <script>
             const form = document.getElementById('form');
             const submit = document.getElementById('submit');
@@ -43,7 +47,7 @@
                     .then(json => {
                         console.log(json);
                         if (json.status === 'ok')
-                            window.location.href = '/profile';
+                            window.location.href = '/login';
                         else
                             result.innerText = json.reason;
                     })

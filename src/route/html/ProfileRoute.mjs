@@ -1,36 +1,43 @@
 import { ReplyType, Route } from '../../Route.mjs';
 import { Session } from '../../Session.mjs';
+import { Status } from '../../Status.mjs';
+import { TimeFormat } from '../../TimeFormat.mjs';
+import { TokenImage } from '../../TokenImage.mjs';
+
 import PaymentModel from '../../model/PaymentModel.mjs';
 import TicketModel from '../../model/TicketModel.mjs';
-import UserModel from '../../model/UserModel.mjs';
 
 const ProfileRoute = new Route(
     'GET', '/profile', ReplyType.HTML,
     async (req, res) => {
         const Payments = PaymentModel.use();
         const Ticket = TicketModel.use();
-        const User = UserModel.use();
 
         try {
-            const sessionCookie = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromCookie(sessionCookie);
-            console.log('session ' + session.token);
-
-            const user = await User.findOne(session.byRef());
-            const userId = user.id;
+            const user = await Session.getUser(req);
 
             const payments = await Payments.findAll({
                 where: {
-                    userId: userId,
+                    userId: user.id,
                 },
             });
 
             const tickets = await Ticket.findAll({
                 where: {
-                    userId: userId,
+                    '$payment.userId$': user.id,
+                    '$payment.isPaid$': true,
                 },
-                include: ['payment'],
+                include: { all: true, nested: true },
             });
+
+            const mappedTickets = tickets.map(ticket => ({
+                title: ticket.payment.show.movie.title,
+                time: new TimeFormat(ticket.payment.show.startTime).toTimeString(),
+                roomNumber: ticket.payment.show.room.number,
+                seatNumber: ticket.seatNumber,
+                tokenImage: new TokenImage(ticket.token, 8).toImageString(),
+
+            }));
 
             const paymentData = payments.map(payment => payment.get());
 
@@ -38,13 +45,11 @@ const ProfileRoute = new Route(
                 helloName: user.login,
                 unpaidPayments: paymentData.filter(pay => !pay.isPaid),
                 paidPayments: paymentData.filter(pay => pay.isPaid),
-                tickets: tickets.filter(ticket => ticket.payment.isPaid).map(ticket => ticket.get()),
+                tickets: mappedTickets,
             });
         }
         catch (e) {
-            console.error(e);
-            res.redirect('/login');
-            return '';
+            return Status.errorPage(res, e);
         }
     },
 );

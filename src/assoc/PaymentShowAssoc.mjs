@@ -1,17 +1,17 @@
 import { Association, AssociationTypes } from '../Association.mjs';
-import TicketModel from '../model/TicketModel.mjs';
+import PaymentModel from '../model/PaymentModel.mjs';
 import ShowModel from '../model/ShowModel.mjs';
 
-const TicketShowAssoc = new Association(
-    'Ticket<-Show',
+const PaymentShowAssoc = new Association(
+    'Payment<-Show',
     {
         type: AssociationTypes.OneToMany,
         from: ShowModel,
-        fromGetterField: 'tickets',
-        to: TicketModel,
+        fromGetterField: 'payments',
+        to: PaymentModel,
         toGetterField: 'show',
         field: 'showId',
     },
 );
 
-export default TicketShowAssoc;
+export default PaymentShowAssoc;

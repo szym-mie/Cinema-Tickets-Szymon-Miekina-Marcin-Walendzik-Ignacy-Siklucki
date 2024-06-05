@@ -1,20 +1,13 @@
 import { ReplyType, Route } from '../../Route.mjs';
-import UserModel from '../../model/UserModel.mjs';
+import { Logging } from '../../Logging.mjs';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
-import { Logging } from '../../Logging.mjs';
 
 const LogoutEndpoint = new Route(
     'POST', '/logout', ReplyType.JSON,
     async (req, res) => {
-        const User = UserModel.use();
-
         try {
-            const sessionCookie = req.unsignCookie(req.cookies.currentSession);
-            console.log(sessionCookie);
-            const session = Session.fromCookie(sessionCookie);
-            console.log(session);
-            const user = await User.findOne(session.byRef());
+            const { user, session } = await Session.getUserAndSession(req);
 
             if (user !== null) {
                 await user.update(session.getObject());

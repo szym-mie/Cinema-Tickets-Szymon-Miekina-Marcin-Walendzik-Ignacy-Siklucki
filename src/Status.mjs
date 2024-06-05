@@ -31,6 +31,21 @@ class Status {
         const where = includeWhere ? 'N/A' : undefined;
         return new this('error', reason, where);
     }
+
+    /**
+     * Send an error page.
+     * @param {Response} res Route response.
+     * @param {Error} e Error to display.
+     * @returns Rendered error page.
+     */
+    static async errorPage(res, e) {
+        console.error(e);
+        return await res.viewAsync(Status.errorPageTemplate, {
+            reason: e,
+        });
+    }
+
+    static errorPageTemplate = 'error.hbs';
 }
 
 export { Status };

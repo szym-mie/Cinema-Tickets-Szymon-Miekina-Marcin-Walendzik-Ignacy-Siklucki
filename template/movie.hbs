@@ -6,27 +6,32 @@
 <body>
     {{>navbar}}
     <main>
-        {{!-- <h1>Movie {{movie}}</h1> --}}
-        <p>{{movie.title}}</p>
-        <p>{{movie.description}}</p>
-        <p>{{movie.year}}</p>
-        <p>{{movie.runtime}}</p>
-        <img src="../public/movies/{{movie.id}}.jpg" alt="{{movie.id}}"/>
-
-        {{#if dates}}
-            {{#each dates}}
-                <div a="/show/{{this.showId}}">    
-                    {{this.day}}
-                    {{this.month}}
-                    {{this.year}}
-                    {{this.hour}}
-                    {{this.minutes}}
-                </div>
-            {{/each}}
-        {{else}}
-            Brak seansów
-        {{/if}}
-
+        <div class="movie">
+            <div class="movie-text">
+                <h2>{{movie.title}}</h2>
+                <p>{{movie.description}}</p>
+                <p><b>Realese year: </b>{{movie.year}}</p>
+                <p><b>Duration: </b>{{movie.runtime}}</p>
+            </div>
+            <div class="movie-poster">
+                <img src="{{movie.posterUrl}}" alt="{{movie.id}}.jpg">
+            </div>
+            <div class="movie-dates">
+                <h3>Closest performances</h3>
+                {{#if dates}}
+                    {{#each dates}}
+                        <a href="/book_show/{{this.showId}}">    
+                            <div class="date">
+                                {{this.day}}/{{this.month}}/{{this.year}}<br/>
+                                {{this.hour}}:{{this.minutes}}
+                            </div>
+                        </a>
+                    {{/each}}
+                {{else}}
+                    Brak seansów
+                {{/if}}
+            </div>
+        </div>
     </main>
     {{>footer}}
 </body>

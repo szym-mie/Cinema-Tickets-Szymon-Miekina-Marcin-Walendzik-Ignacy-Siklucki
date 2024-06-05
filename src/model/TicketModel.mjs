@@ -19,16 +19,6 @@ const TicketModel = new Model(
                 is: /[0-9a-f]{96}/,
             },
         },
-        // User ID of buyer
-        userId: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
-        // ID of show being booked
-        showId: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
         // ID of the payment
         paymentId: {
             type: DataTypes.BIGINT,

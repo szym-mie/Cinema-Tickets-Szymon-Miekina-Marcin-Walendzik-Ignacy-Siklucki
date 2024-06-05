@@ -6,8 +6,21 @@
 <body>
     {{>navbar}}
     <main>
-        <h1>Hello there!</h1>
-        {{content}}
+        <div class="home-main">
+            <div class="home-greeting">
+                <h1>Welcome in Cinema!</h1>
+                <p>Welcome on our home page. Make yourself at home.<br> Explore our movie base and book tickets for you and your family and friends!</p>
+            </div>
+            <div class="home-movies">
+                {{#each earliestMovies}}
+                    <div class="home-poster">
+                        <a href="/movie/{{this.id}}">
+                            <img src="{{this.posterUrl}}" alt="{{this.title}}">
+                        </a>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
     </main>
     {{>footer}}
 </body>

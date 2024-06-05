@@ -1,7 +1,8 @@
 import { ReplyType, Route } from '../../Route.mjs';
+import { Op } from 'sequelize';
+
 import MovieModel from '../../model/MovieModel.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
-import { Op } from 'sequelize';
 
 const MovieRoute = new Route(
     'GET', '/movie/:id', ReplyType.HTML,

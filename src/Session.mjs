@@ -1,11 +1,12 @@
 import { Security } from './Security.mjs';
+import UserModel from './model/UserModel.mjs';
 
 class Session {
     /**
      * @constructor
      * @private
      * @param {string} token Token to use.
-     * @param {string} sessionField Session field name in cookies and database.
+     * @param {string?} sessionField Session field name in cookies and database.
      */
     constructor(token, sessionField) {
         this.token = token;
@@ -34,6 +35,38 @@ class Session {
      */
     byRef() {
         return { where: this.getObject() };
+    }
+
+    /**
+     * Get session user out of request.
+     * @param {Request} req Request containing cookie.
+     * @param {string?} cookieName Cookie name.
+     * @returns Session user.
+     */
+    static async getUser(req, cookieName) {
+        const sessionField = cookieName || Session.sessionFieldDefault;
+        const sessionToken = req.unsignCookie(req.cookies[sessionField]);
+        const session = Session.fromCookie(sessionToken);
+        const user = await UserModel.use().findOne(session.byRef());
+        if (user === null)
+            throw new Error('Invalid session token');
+        return user;
+    }
+
+    /**
+     * Get session and user out of request.
+     * @param {Request} req Request containing cookie.
+     * @param {string?} cookieName Cookie name.
+     * @returns Session and user object.
+     */
+    static async getUserAndSession(req, cookieName) {
+        const sessionField = cookieName || Session.sessionFieldDefault;
+        const sessionToken = req.unsignCookie(req.cookies[sessionField]);
+        const session = Session.fromCookie(sessionToken);
+        const user = await UserModel.use().findOne(session.byRef());
+        if (user === null)
+            throw new Error('Invalid session token');
+        return { user: user, session: session };
     }
 
     /**

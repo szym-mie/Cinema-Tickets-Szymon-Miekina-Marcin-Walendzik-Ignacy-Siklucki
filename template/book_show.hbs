@@ -6,21 +6,38 @@
 <body>
     {{>navbar}}
     <main>
-        <p>Nr sali: {{room.number}}
-        Ilość miejsc: {{room.seats}}</p>
-
-        <div class="seats-container">
-                {{#each seats}}
-                    <div class="seat">
-                        {{#if this.isBooked}}
-                            <div class="booked">{{this.number}}</div>
-                        {{else}}
-                            <div class="not-booked" onclick="toggleSeat(this)">{{this.number}}</div>
-                        {{/if}}
-                    </div>
-                {{/each}}
+        <div class="reservation">
+            <div></div>
+            <div class="room-schema">
+                <div class="seats-container">
+                        {{#each seats}}
+                            <div class="seat">
+                                {{#if this.isBooked}}
+                                    <div class="booked">{{this.number}}</div>
+                                {{else}}
+                                    <div class="not-booked" onclick="toggleSeat(this)">{{this.number}}</div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                </div>
+                <div class="screen-container">
+                    <div class="screen">SCREEN</div>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="poster-div-res" style="background-image: url({{movie.posterUrl}})"></div>
+                <h2>{{movie.title}}</h2>
+                <div class="date">
+                    {{time}}
+                </div>
+                <div class="room-text">
+                    <p>Nr sali: {{room.number}}</p>
+                    <p>Ilość miejsc: {{room.seats}}</p>
+                </div>
+                <button onclick="bookShow()" type="button">Book now!</button><br>
+            </div>
+            <div></div>
         </div>
-        <button onclick="bookShow()" type="button">Book now!</button><br>
         <p id="showId" style="display: none;">{{show.id}}</p>
     </main>
     {{>footer}}
@@ -54,6 +71,8 @@
                 console.log(json);
                 if (json.status === 'ok')
                     window.location.href = '/profile';
+                else if (json.reason === 'Seat taken')
+                    window.location.reload()
                 else
                     window.location.href = '/login';
             })

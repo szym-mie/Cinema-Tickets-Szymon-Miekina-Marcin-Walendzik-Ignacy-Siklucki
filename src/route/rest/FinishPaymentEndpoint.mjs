@@ -1,8 +1,8 @@
-import { Logging } from '../../Logging.mjs';
 import { ReplyType, Route } from '../../Route.mjs';
-import UserModel from '../../model/UserModel.mjs';
+import { Logging } from '../../Logging.mjs';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
+
 import PaymentModel from '../../model/PaymentModel.mjs';
 
 const FinishPaymentEndpoint = new Route(
@@ -10,22 +10,17 @@ const FinishPaymentEndpoint = new Route(
     async (req, _res) => {
         const paymentToken = req.body.paymentToken;
 
-        const User = UserModel.use();
         const Payment = PaymentModel.use();
 
         try {
-            const sessionToken = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromCookie(sessionToken);
-
-            const user = await User.findOne(session.byRef());
-            const userId = user.id;
+            const user = await Session.getUser(req);
 
             await Payment.update({
                 isPaid: true,
             }, {
                 where: {
                     token: paymentToken,
-                    userId: userId,
+                    userId: user.id,
                 },
             });
 

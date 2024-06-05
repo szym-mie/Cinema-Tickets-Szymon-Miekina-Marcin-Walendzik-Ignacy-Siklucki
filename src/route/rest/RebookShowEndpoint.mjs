@@ -1,11 +1,11 @@
 import { ReplyType, Route } from '../../Route.mjs';
-import TicketModel from '../../model/TicketModel.mjs';
-import UserModel from '../../model/UserModel.mjs';
+import { Logging } from '../../Logging.mjs';
 import { Security } from '../../Security.mjs';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
-import { Logging } from '../../Logging.mjs';
+
 import PaymentModel from '../../model/PaymentModel.mjs';
+import TicketModel from '../../model/TicketModel.mjs';
 
 const RebookShowEndpoint = new Route(
     'POST', '/rebook_show', ReplyType.JSON,
@@ -20,14 +20,9 @@ const RebookShowEndpoint = new Route(
 
         const Payment = PaymentModel.use();
         const Ticket = TicketModel.use();
-        const User = UserModel.use();
-
-        console.log(req.modelManager.newTransaction);
 
         try {
-            const sessionToken = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromCookie(sessionToken);
-            const user = await User.findOne(session.byRef());
+            const user = await Session.getUser(req);
 
             const payment = await Payment.findOne({
                 where: {
@@ -43,14 +38,24 @@ const RebookShowEndpoint = new Route(
             const transaction = await req.modelManager.newTransaction();
             await transaction.of(async (t) => {
                 for (const ticket of payment.tickets) {
-                    await ticket.destroy();
+                    await ticket.destroy(t.wrap({}));
                 }
                 for (const seatNumber of seatNumbers) {
+                    const hasSeatBeenTaken = await Ticket.count(t.wrap({
+                        where: {
+                            '$payment.showId$': showId,
+                            'seatNumber': seatNumber,
+                        },
+                        include: ['payment'],
+                    })) > 0;
+
+                    if (hasSeatBeenTaken) {
+                        throw new Error('Seat taken');
+                    }
+
                     const ticketToken = Security.createSecureToken(48);
                     await Ticket.create(t.wrap({
                         token: ticketToken,
-                        userId: user.id,
-                        showId: showId,
                         paymentId: payment.id,
                         seatNumber: seatNumber,
                     }));

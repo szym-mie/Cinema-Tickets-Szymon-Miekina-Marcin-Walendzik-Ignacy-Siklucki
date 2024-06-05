@@ -9,13 +9,19 @@
         {{#if shows}}
             {{#each shows}}
                 <div class="show">
-                    <a href="/book_show/{{this.id}}">
-                        <div>    
-                            <h2>{{this.movie.title}}</h2>
+                        <div class="row">
                             <img class="poster" src="{{this.movie.posterUrl}}" alt="{{this.movie.posterUrl}}"/>
-                            <h5>{{this.hour}}:{{this.minutes}} {{this.day}}/{{this.month}}/{{this.year}}</h5>
+                            <div class="show-info">
+                                <a href="/movie/{{this.movie.id}}"><h2>{{this.movie.title}}</h2></a>
+                                <a href="/book_show/{{this.id}}">
+                                    <div class="row">
+                                        <h4>{{this.price}}$</h4>
+                                            
+                                        <h4>{{this.time}}</h4>
+                                    </div>
+                                </a> 
+                            </div>
                         </div>
-                    </a> 
                 </div>
             {{/each}}
         {{else}}

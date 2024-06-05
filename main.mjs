@@ -8,8 +8,8 @@ import ShowModel from './src/model/ShowModel.mjs';
 import TicketModel from './src/model/TicketModel.mjs';
 import UserModel from './src/model/UserModel.mjs';
 
-import TicketUserAssoc from './src/assoc/TicketUserAssoc.mjs';
-import TicketShowAssoc from './src/assoc/TicketShowAssoc.mjs';
+import PaymentUserAssoc from './src/assoc/PaymentUserAssoc.mjs';
+import PaymentShowAssoc from './src/assoc/PaymentShowAssoc.mjs';
 import TicketPaymentAssoc from './src/assoc/TicketPaymentAssoc.mjs';
 import ShowMovieAssoc from './src/assoc/ShowMovieAssoc.mjs';
 import ShowRoomAssoc from './src/assoc/ShowRoomAssoc.mjs';
@@ -37,7 +37,6 @@ import BookShowEndpoint from './src/route/rest/BookShowEndpoint.mjs';
 import UnbookShowEndpoint from './src/route/rest/UnbookShowEndpoint.mjs';
 import RebookShowEndpoint from './src/route/rest/RebookShowEndpoint.mjs';
 import DeleteUserEndpoint from './src/route/rest/DeleteUserEndpoint.mjs';
-import DeleteTicketEndpoint from './src/route/rest/DeleteTicketEndpoint.mjs';
 import FinishPaymentEndpoint from './src/route/rest/FinishPaymentEndpoint.mjs';
 
 import { DemoDataLoader, demoData } from './src/DemoData.mjs';
@@ -51,8 +50,8 @@ const modelManager = new ModelManager({
     log: 'line',
 });
 
-modelManager.addAssoc(TicketShowAssoc);
-modelManager.addAssoc(TicketUserAssoc);
+modelManager.addAssoc(PaymentShowAssoc);
+modelManager.addAssoc(PaymentUserAssoc);
 modelManager.addAssoc(TicketPaymentAssoc);
 modelManager.addAssoc(ShowMovieAssoc);
 modelManager.addAssoc(ShowRoomAssoc);
@@ -132,7 +131,6 @@ routeManager.addRoute(BookShowEndpoint);
 routeManager.addRoute(UnbookShowEndpoint);
 routeManager.addRoute(RebookShowEndpoint);
 routeManager.addRoute(DeleteUserEndpoint);
-routeManager.addRoute(DeleteTicketEndpoint);
 routeManager.addRoute(FinishPaymentEndpoint);
 
 await routeManager.startServer();

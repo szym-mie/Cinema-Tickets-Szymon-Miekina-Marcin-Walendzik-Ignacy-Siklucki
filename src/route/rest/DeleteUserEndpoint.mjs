@@ -1,44 +1,41 @@
 import { ReplyType, Route } from '../../Route.mjs';
-import { Session } from '../../Session.mjs';
-import UserModel from '../../model/UserModel.mjs';
-import TicketModel from '../../model/TicketModel.mjs';
 import { Logging } from '../../Logging.mjs';
+import { Session } from '../../Session.mjs';
+
+import PaymentModel from '../../model/PaymentModel.mjs';
+import UserModel from '../../model/UserModel.mjs';
 
 const DeleteUserEndpoint = new Route(
     'POST', '/delete_user', ReplyType.JSON,
     async (req, _res) => {
-        const Ticket = TicketModel.use();
+        const Payment = PaymentModel.use();
         const User = UserModel.use();
 
         try {
-            const sessionToken = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromCookie(sessionToken);
-
-            const user = await User.findOne(session.byRef());
-            const userId = user.id;
+            const user = await Session.getUser(req);
 
             const transaction = await req.modelManager.newTransaction();
 
             await transaction.of((t) => {
                 User.destroy(t.wrap({
                     where: {
-                        userId: userId,
+                        userId: user.id,
                     },
                 }));
 
-                Ticket.destroy(t.wrap({
+                Payment.destroy(t.wrap({
                     where: {
-                        userId: userId,
+                        userId: user.id,
                     },
                 }));
             });
 
-            Logging.logInfo('User ' + data.login + ' was deleted', 'User/Ticket');
+            Logging.logInfo('User ' + data.login + ' was deleted', 'User/Payment');
             return Status.ok();
         }
         catch (e) {
             console.error(e);
-            Logging.logError('User delete failed - ' + e.message, 'User/Ticket');
+            Logging.logError('User delete failed - ' + e.message, 'User/Payment');
             return Status.error(e);
         }
     },

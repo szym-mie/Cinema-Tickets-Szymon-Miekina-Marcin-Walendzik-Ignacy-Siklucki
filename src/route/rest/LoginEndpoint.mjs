@@ -1,9 +1,10 @@
 import { ReplyType, Route } from '../../Route.mjs';
-import UserModel from '../../model/UserModel.mjs';
-import { Op, ValidationError } from 'sequelize';
+import { Logging } from '../../Logging.mjs';
+import { Op } from 'sequelize';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
-import { Logging } from '../../Logging.mjs';
+
+import UserModel from '../../model/UserModel.mjs';
 
 const LoginEndpoint = new Route(
     'POST', '/login', ReplyType.JSON,

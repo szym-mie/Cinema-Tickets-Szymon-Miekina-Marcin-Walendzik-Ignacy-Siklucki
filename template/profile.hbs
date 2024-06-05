@@ -10,9 +10,17 @@
         <h3>Paid tickets</h3>
         {{#if tickets}}
             {{#each tickets}}
-                <div class="show">
-                    <p>token: {{this.token}}</p>
-                    <p>seat: {{this.seatNumber}}</p>
+                <div class="item">
+                    <div class="row pad-1">
+                        <div class="pad-1">
+                            <p>{{this.title}} - {{this.time}}</p>
+                            <p>room: {{this.roomNumber}}</p>
+                            <p>seat: {{this.seatNumber}}</p>
+                        </div>
+                        <div class="pad-1">
+                            <pre class="pixcode">{{this.tokenImage}}</pre>
+                        </div>
+                    </div>
                 </div>
             {{/each}}
         {{else}}
@@ -21,10 +29,10 @@
         <h3>Unpaid Payments</h3>
         {{#if unpaidPayments}}
             {{#each unpaidPayments}}
-                <div class="show">
+                <div class="item">
                     <a href="/payment/{{this.token}}">
                         <h3>{{this.title}}</h3>
-                        <p>Not paid.</p>
+                        <p class="pad-1">Not paid.</p>
                     </a>
                 </div>
             {{/each}}
@@ -34,10 +42,10 @@
         <h3>Paid Payments</h3>
         {{#if paidPayments}}
             {{#each paidPayments}}
-                <div class="show">
+                <div class="item">
                     <a href="/payment/{{this.token}}">
                         <h3>{{this.title}}</h3>
-                        <p>Paid.</p>
+                        <p class="pad-1">Paid.</p>
                     </a>
                 </div>
             {{/each}}

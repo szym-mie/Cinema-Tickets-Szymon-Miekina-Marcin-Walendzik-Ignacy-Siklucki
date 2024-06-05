@@ -1,13 +1,13 @@
 import { ReplyType, Route } from '../../Route.mjs';
-import TicketModel from '../../model/TicketModel.mjs';
-import UserModel from '../../model/UserModel.mjs';
 import { Security } from '../../Security.mjs';
 import { Session } from '../../Session.mjs';
 import { Status } from '../../Status.mjs';
 import { Logging } from '../../Logging.mjs';
+import { TimeFormat } from '../../TimeFormat.mjs';
+
 import PaymentModel from '../../model/PaymentModel.mjs';
 import ShowModel from '../../model/ShowModel.mjs';
-import { TimeFormat } from '../../TimeFormat.mjs';
+import TicketModel from '../../model/TicketModel.mjs';
 
 const BookShowEndpoint = new Route(
     'POST', '/book_show', ReplyType.JSON,
@@ -22,14 +22,9 @@ const BookShowEndpoint = new Route(
         const Show = ShowModel.use();
         const Payment = PaymentModel.use();
         const Ticket = TicketModel.use();
-        const User = UserModel.use();
-
-        console.log(req.modelManager.newTransaction);
 
         try {
-            const sessionToken = req.unsignCookie(req.cookies.currentSession);
-            const session = Session.fromCookie(sessionToken);
-            const user = await User.findOne(session.byRef());
+            const user = await Session.getUser(req);
 
             const show = await Show.findOne({
                 where: {
@@ -53,11 +48,22 @@ const BookShowEndpoint = new Route(
                 }));
 
                 for (const seatNumber of seatNumbers) {
+                    const hasSeatBeenTaken = await Ticket.count(t.wrap({
+                        where: {
+                            '$payment.showId$': showId,
+                            'seatNumber': seatNumber,
+                        },
+                        include: ['payment'],
+                    })) > 0;
+
+                    if (hasSeatBeenTaken) {
+                        throw new Error('Seat taken');
+                    }
+
                     const ticketToken = Security.createSecureToken(48);
+
                     await Ticket.create(t.wrap({
                         token: ticketToken,
-                        userId: user.id,
-                        showId: showId,
                         paymentId: payment.id,
                         seatNumber: seatNumber,
                     }));
