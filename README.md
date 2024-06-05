@@ -10,9 +10,12 @@
 
 Baza danych: Postgres
 
+Frontend: Handlebars
+
 Backend: Node.js
 
 ORM: Sequelize
+
 
 ## Główne operacje
 
@@ -216,8 +219,36 @@ Klient zapłaca za zarezerwowane miejsca, otrzymując dostęp do biletów.
 
 Jest to ORM do aplikacji w Javascripcie na platformie Node.js. Obsługiwane jest wiele systemów bazodanych w tym Postgres, który został użyty w tym projekcie. 
 
-Sama bibliotek bardzo ułatwia wykonywanie operacji na bazie danych, pozwalając na tworzenie relacji 1:1, 1:N i N:N, transakcji, walidacji danych i ich automatyczne przetwarzanie.
+Sama biblioteka bardzo ułatwia wykonywanie operacji na bazie danych, pozwalając na tworzenie relacji 1:1, 1:N i N:N, transakcji, walidacji danych i ich automatyczne przetwarzanie.
 
 Korzystanie z tej technologi może wydawać się intuicyjne, głównie z powodu na nature samego języka Javascript jak i wielu "trików", które dodaje sam Sequelize w celu ułatwienia niektórych operacji, pod warunkiem, że zrozumie się ich działanie - mianowicie wiele pól do obiektów z rezultatami jest dodawane dynamicznie, i zależy od opcji podanych do metody.
 
 Należy też pamiętać o tym, że Sequelize może połączyć się tylko z istniejącą tabelą, co uniemożliwia tworzenie nowych tabel, modyfikowanie isniejących etc.
+
+
+
+## Frontend
+
+### Handlebars
+
+Do bazy danych oraz aplikacji backendowej dołączono również frontend, który zaimplementowano przy pomocy technologii Handlebars. Jest to system szablonów dla języka JavaScript, który pozwala na dynamiczne generowanie struktur HTML. Umożliwia oddzielenie logiki od prezentacji, co czyni kod bardziej przejrzystym i łatwiejszym do utrzymania. Szablony Handlebars składają się z plików HTML zawierających specjalne znaczniki w podwójnych klamrach, które reprezentują zmienne i wyrażenia.
+
+Jednym z głównych atutów Handlebars jest jego prostota i wydajność, dzięki czemu jest szeroko stosowany w aplikacjach webowych do renderowania dynamicznych treści po stronie klienta. Działa również na serwerze w środowisku Node.js, stąd zdecydowano się na jego użycie przy projekcie.
+
+### Strona logowania
+![alt](/documentation/screens/screenshot_3.jpg)
+
+### Wybór miejsca
+![alt](/documentation/screens/screenshot_4.jpg)
+
+### Opis filmu
+![alt](/documentation/screens/screenshot_5.jpg)
+
+### Szczegóły płatności
+![alt](/documentation/screens/screenshot_1.jpg)
+
+### Posiadane widoki i strona profilu
+![alt](/documentation/screens/screenshot_2.jpg)
+
+
+
