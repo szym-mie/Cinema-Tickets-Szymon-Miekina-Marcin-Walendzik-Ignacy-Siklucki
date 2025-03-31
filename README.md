@@ -1,5 +1,11 @@
 # Aplikacja - rezerwacja biletów w kinie
 
+![screenshot_1](./documentation/screens/screenshot_1.jpg)
+![screenshot_2](./documentation/screens/screenshot_2.jpg)
+![screenshot_3](./documentation/screens/screenshot_3.jpg)
+![screenshot_4](./documentation/screens/screenshot_4.jpg)
+![screenshot_5](./documentation/screens/screenshot_5.jpg)
+
 ## Skład grupy
 
 - Marcin Walendzik
